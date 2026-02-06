@@ -1,0 +1,1 @@
+export type Feelings = "Fatigued" | "Overwhelmed" | "Mind Wandering" | "Sleepy";
