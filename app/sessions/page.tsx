@@ -1,12 +1,18 @@
-"use client";
 import StarBreating from "@/components/StartBreating/StartBreating";
-import { useSearchParams } from "next/navigation";
 import { breathingSets } from "@/data/breathingSets";
 
-export default function SessionsPage() {
-    const params = useSearchParams();
-    const techId = params.get("tech");
-    const selectedTime = params.get("time");
+type SessionsPageProps = {
+    searchParams?: {
+        tech?: string | string[];
+        time?: string | string[];
+    };
+};
+
+export default function SessionsPage({ searchParams }: SessionsPageProps) {
+    const techValue = searchParams?.tech;
+    const timeValue = searchParams?.time;
+    const techId = Array.isArray(techValue) ? techValue[0] : techValue;
+    const selectedTime = Array.isArray(timeValue) ? timeValue[0] : timeValue;
 
     const technique = breathingSets
         .flatMap((set) => set.techniques)
