@@ -1,7 +1,17 @@
+"use client";
+
 import FeelingSection from "@/components/FeelingSection/FeelingSection";
 import TimeSection from "@/components/TimeSection/TimeSection";
+import FindBrigthingSystem from "@/components/FindBreathingSystem/FindBrigthingSystem";
+
+import { Feelings, TimeOption } from "@/type/types";
+import { useState } from "react";
 
 export default function Home() {
+  const [selectedFeeling, setSelectedFeeling] = useState<Feelings | null>(null);
+  const [selectedTime, setSelectedTime] = useState<TimeOption | null>(null);
+  const [findBreathingSystem, setFindBreathingSystem] = useState<boolean>(false);
+
   return (
     <div className="gradient-bg">
       <div className="animate-fade-in fade-in-delay-1 py-18 px-4.5 m-auto flex justify-center flex-col items-center">
@@ -12,10 +22,10 @@ export default function Home() {
       </div>
       <div className="max-w-330 mx-auto grid grid-cols-1 gap-4 p-1 md:grid-cols-2">
         <div className="animate-fade-in fade-in-delay-2">
-          <FeelingSection />
+          <FeelingSection selectedFeeling={selectedFeeling} onSelectFeeling={setSelectedFeeling} />
         </div>
         <div className="animate-fade-in fade-in-delay-3">
-          <TimeSection />
+          <TimeSection selectedTime={selectedTime} onSelectTime={setSelectedTime} findBreathingSystem={setFindBreathingSystem} />
         </div>
       </div>
       <div className="mt-20 w-full max-w-4xl opacity-20 pointer-events-none mx-auto">
@@ -27,6 +37,12 @@ export default function Home() {
           <span className="material-symbols-outlined text-4xl dark:text-white">quiet_time</span>
         </div>
       </div>
+        <FindBrigthingSystem
+          selectedFeeling={selectedFeeling}
+          selectedTime={selectedTime}
+          findBreathingSystem={findBreathingSystem}
+          onClose={() => setFindBreathingSystem(false)}
+        />
       <footer className="py-8 text-center text-sm font-extrabold text-gray-700 dark:text-gray-600">
         © {new Date().getFullYear()} Focus Reset. All rights reserved.
       </footer>

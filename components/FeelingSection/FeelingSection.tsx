@@ -2,11 +2,12 @@
 
 import { Feelings } from "@/type/types";
 
-import { useState } from "react";
+type FeelingSectionProps = {
+    selectedFeeling: Feelings | null;
+    onSelectFeeling: (feeling: Feelings) => void;
+};
 
-export default function FeelingSection() {
-    const [selectedFeeling, setSelectedFeeling] = useState<Feelings | null>(null);
-
+export default function FeelingSection({ selectedFeeling, onSelectFeeling }: FeelingSectionProps) {
     const feelings = ["Fatigued", "Overwhelmed", "Mind Wandering", "Sleepy"];
     const feelingIcons = ["battery_android_frame_1", "waves", "blur_on", "bedtime"];
     const feelingDescriptions = ["Low Energy, mental fog", "Too many Tasks at once", "Mind is wandering", "Need a quick wake up"];
@@ -24,7 +25,7 @@ export default function FeelingSection() {
             </div>
             <div className="w-full grid grid-cols-1 gap-4 p-3.5 md:grid-cols-2">
                 {feelings.slice(0).map((feeling, index) => (
-                    <div onClick={() => setSelectedFeeling(feeling as Feelings)} key={index} className={`transition-all duration-300 relative ${selectedFeeling === feeling ? "rounded-2xl bg-primary/5 border border-primary p-4 shadow-lg shadow-black/20 backdrop-blur-md" : noneActiveCard}`}>
+                    <div onClick={() => onSelectFeeling(feeling as Feelings)} key={index} className={`transition-all duration-300 relative ${selectedFeeling === feeling ? "rounded-2xl bg-primary/5 border border-primary p-4 shadow-lg shadow-black/20 backdrop-blur-md" : noneActiveCard}`}>
                         <div>
                             <span className={`material-symbols-outlined ${selectedFeeling === feeling ? "border bg-primary/20 border-primary text-primary rounded-md p-3 mb-2" : noneActiveCardIcon}`}>
                                 {feelingIcons[index]}

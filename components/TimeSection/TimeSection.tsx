@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { TimeOption } from "@/type/types";
 
-export default function TimeSection() {
-    const [time, setTime] = useState<"2 min" | "5 min" | "10 min" | null>(null);
-    const times = ["2 min", "5 min", "10 min"];
+type TimeSectionProps = {
+    selectedTime: TimeOption | null;
+    onSelectTime: (time: TimeOption) => void;
+    findBreathingSystem: (find: boolean) => void;
+};
+
+export default function TimeSection({ selectedTime, onSelectTime, findBreathingSystem }: TimeSectionProps) {
+    const times: TimeOption[] = ["2 min", "5 min", "10 min"];
 
     const noneActiveButton = "w-full shadow-lg shadow-black/20 dark:text-white rounded-md border font-bold border-gray-200/50 bg-white/20 p-4 shadow-lg shadow-black/20 backdrop-blur-md dark:border-white/10 dark:bg-white/5";
 
@@ -14,12 +19,12 @@ export default function TimeSection() {
                 <span className="material-symbols-outlined size-6 dark:text-primary">
                     hourglass
                 </span>
-                <span className="dark:text-white">How are you feeling?</span>
+                <span className="dark:text-white">How much time do you have?</span>
             </div>
             <div className="p-3 w-full">
                 <div className="grid grid-cols-3 gap-2 rounded-md bg-gray-200/10 border border-gray-200 dark:bg-white/5 dark:border-white/10 p-3">
                     {times.map((t) => (
-                        <button onClick={() => setTime(t as "2 min" | "5 min" | "10 min")} key={t} className={`transition-all duration-300 ${time === t ? "border border-primary text-white font-extrabold rounded-md bg-primary" : noneActiveButton}`}>
+                        <button onClick={() => onSelectTime(t)} key={t} className={`transition-all duration-300 ${selectedTime === t ? "border border-primary text-white font-extrabold rounded-md bg-primary" : noneActiveButton}`}>
                             {t}
                         </button>
                     ))}
@@ -34,7 +39,7 @@ export default function TimeSection() {
                 </div>
             </div>
             <div className="p-3">
-                <button className="w-full flex justify-center items-center gap-4 p-7 rounded-md text-[20px] bg-primary text-white font-extrabold shadow-2xl shadow-primary/20 active:translate-y-1 transition-all duration-100">
+                <button onClick={() => findBreathingSystem(true)} className="w-full flex justify-center items-center gap-4 p-7 rounded-md text-[20px] bg-primary text-white font-extrabold shadow-2xl shadow-primary/20 active:translate-y-1 transition-all duration-100">
                     Find Technique
                     <span className="material-symbols-outlined text-2xl">arrow_forward</span>
                 </button>
