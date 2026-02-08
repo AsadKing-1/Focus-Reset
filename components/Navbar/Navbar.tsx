@@ -32,7 +32,6 @@ export default function Navbar() {
     const navLinks = [
         { href: "/", label: "Home" },
         { href: "/history", label: "History" },
-        { href: "/sessions", label: "Sessions" },
         { href: "/settings", label: "Settings" },
     ];
 

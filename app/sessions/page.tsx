@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import StarBreating from "@/components/StartBreating/StartBreating";
 import { breathingSets } from "@/data/breathingSets";
 
