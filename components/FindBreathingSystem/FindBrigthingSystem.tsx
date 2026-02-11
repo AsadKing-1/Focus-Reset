@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { breathingSets } from "@/data/breathingSets";
-import { Feelings, TimeOption } from "@/type/types";
+import type { Feelings, TimeOption, Phase } from "@/type/types";
 import { useEffect, useMemo, useState } from "react";
 
 interface FindBrigthingSystemProps {
@@ -12,10 +12,24 @@ interface FindBrigthingSystemProps {
     onClose: () => void;
 }
 
-type Phase = "idle" | "loading" | "success" | "result";
+type DialogPhase = "idle" | "loading" | "success" | "result";
+
+const PHASE_LABELS: Record<Phase["type"], string> = {
+    inhale: "Inhale",
+    hold: "Hold",
+    exhale: "Exhale",
+    hold_empty: "Hold (empty)",
+};
+
+const formatPhases = (phases: Phase[]) => {
+    if (phases.length === 0) return "Custom breathing";
+    return phases
+        .map((phase) => `${phase.label ?? PHASE_LABELS[phase.type]} ${phase.seconds}`)
+        .join(" / ");
+};
 
 export default function FindBrigthingSystem({ selectedFeeling, selectedTime, findBreathingSystem, onClose }: FindBrigthingSystemProps) {
-    const [phase, setPhase] = useState<Phase>("idle");
+    const [phase, setPhase] = useState<DialogPhase>("idle");
 
     const recommendation = useMemo(() => {
         if (!selectedFeeling || !selectedTime) return null;
@@ -107,7 +121,7 @@ export default function FindBrigthingSystem({ selectedFeeling, selectedTime, fin
                                         <Link key={technique.id} href={{ pathname: "/sessions", query: { tech: technique.id, time: selectedTime ?? "" } }} className="rounded-lg border border-gray-200 bg-gray-50 p-3 flex justify-between items-center transition-all shadow-md duration-300 hover:scale-[1.04] active:scale-100 active:shadow-none dark:border-white/10 dark:bg-black/10">
                                             <div>
                                                 <p className="text-sm font-extrabold">{technique.name}</p>
-                                                <p className="text-xs text-gray-600 dark:text-white/60">{technique.pattern}</p>
+                                                <p className="text-xs text-gray-600 dark:text-white/60">{formatPhases(technique.phases)}</p>
                                                 {technique.notes && (
                                                     <p className="text-[11px] text-gray-400 dark:text-white/40">{technique.notes}</p>
                                                 )}

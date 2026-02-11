@@ -55,7 +55,7 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center items-center gap-2 text-xs text-gray-400 uppercase tracking-widest">
+            <div className="flex justify-center items-center gap-2 text-xs text-gray-400 uppercase tracking-widest pb-10">
                 <span className="material-symbols-outlined text-sm">info</span>
                 <span>Based on your "Anxious" assessment</span>
             </div>

@@ -8,13 +8,14 @@ import type { SessionStatus } from "@/type/types";
 
 import BeforeBreathingSessionStart from "@/components/BeforeBreathingSessionStart/BeforeBreathingSessionStart";
 import BreathingSessionActive from "@/components/BreathingSessionActive/BreathingSessionActive";
+import BreathingSessionFinished from "@/components/BreathingSessionFinished/BreathingSessionFinished";
 
 export default function SessionClient() {
     const params = useSearchParams();
     const techId = params.get("tech");
     const selectedTime = params.get("time");
 
-    const [BreathingSession, setBreathingSession] = useState<SessionStatus>("Not Started");
+    const [BreathingSession, setBreathingSession] = useState<SessionStatus>("Finished");
     const [isHydrated, setIsHydrated] = useState(false);
 
     const storageKey = techId ? `breathing-session:${techId}` : null;
@@ -45,7 +46,7 @@ export default function SessionClient() {
     if (!technique) return <div className="p-6 text-center text-sm text-gray-400">Technique not found</div>;
 
     return (
-        <div>
+        <div className="flex flex-1 flex-col min-h-0">
             {BreathingSession === "Not Started" && (
                 <BeforeBreathingSessionStart
                     technique={technique}
@@ -54,13 +55,15 @@ export default function SessionClient() {
                 />
             )}
             {BreathingSession === "Active" &&
-                <div className="w-full h-full flex justify-center items-center">
+                <div className="flex-1 w-full flex justify-center items-center">
                     <BreathingSessionActive
                         setBreathingSession={setBreathingSession}
                         selectedTime={selectedTime}
+                        technique={technique}
                     />
                 </div>
             }
+            {BreathingSession === "Finished" && <BreathingSessionFinished />}
         </div>
     );
 }
