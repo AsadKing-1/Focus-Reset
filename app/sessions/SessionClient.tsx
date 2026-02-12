@@ -63,7 +63,12 @@ export default function SessionClient() {
                     />
                 </div>
             }
-            {BreathingSession === "Finished" && <BreathingSessionFinished />}
+            {BreathingSession === "Finished" &&
+                <BreathingSessionFinished
+                    selectedTime={selectedTime}
+                    technique={technique}
+                />
+            }
         </div>
     );
 }
