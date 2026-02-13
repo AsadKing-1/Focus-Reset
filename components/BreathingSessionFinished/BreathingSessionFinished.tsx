@@ -1,6 +1,7 @@
 import { BreathingTechnique } from "@/type/types";
 
 import FeelingAfterSession from "../FeelingAfterSession/FeelingAfterSession";
+import InputFeelings from "../InputFeelings/InputFeelings";
 
 interface BreathingSessionFinishedProps {
     technique: BreathingTechnique;
@@ -9,14 +10,14 @@ interface BreathingSessionFinishedProps {
 
 export default function BreathingSessionFinished({ technique, selectedTime }: BreathingSessionFinishedProps) {
     return (
-        <div className="w-full py-5">
-            <div className="w-full flex justify-center">
+        <div className="w-full py-3 flex flex-col gap-2">
+            <div className="w-full flex justify-center animate-fade-in fade-in-delay-1">
                 <div className="w-full max-w-5xl p-3">
-                    <h1 className="text-[35px] font-extrabold dark:text-white">Session Complete</h1>
+                    <h1 className="text-[35px] font-extrabold text-slate-500 dark:text-white">Session Complete</h1>
                     <p className="text-gray-400">Great Job taking time for yourself</p>
                 </div>
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center animate-fade-in fade-in-delay-2">
                 <div className="w-full max-w-5xl p-3">
                     <div className="w-full mb-10 group">
                         <div className="flex flex-col md:flex-row items-stretch gap-3 rounded-xl overflow-hidden bg-white dark:bg-[#1c2127] border border-slate-200 dark:border-slate-800 shadow-sm transition-shadow hover:shadow-md">
@@ -52,9 +53,25 @@ export default function BreathingSessionFinished({ technique, selectedTime }: Br
                     </div>
                 </div>
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center animate-fade-in fade-in-delay-3">
                 <div className="w-full max-w-5xl">
                     <FeelingAfterSession />
+                </div>
+            </div>
+            <div className="w-full flex justify-center animate-fade-in fade-in-delay-4">
+                <div className="w-full max-w-5xl p-3">
+                    <InputFeelings />
+                </div>
+            </div>
+            <div className="w-full p-3 flex justify-center flex-col items-center animate-fade-in fade-in-delay-5">
+                <button className="flex justify-center transition-all active:translate-y-1 active:shadow-none items-center gap-2 hover:bg-primary/80 bg-primary shadow-lg font-extrabold rounded-2xl p-5 max-w-120 w-full text-white">
+                    Save and Finish
+                    <span className="material-symbols-outlined">
+                        arrow_right_alt
+                    </span>
+                </button>
+                <div className="text-center text-slate-500 dark:text-slate-400 mt-2">
+                    Taking a breath is the first step to productive hour
                 </div>
             </div>
         </div>

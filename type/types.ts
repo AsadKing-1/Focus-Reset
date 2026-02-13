@@ -2,6 +2,7 @@ export type Feelings = "Fatigued" | "Overwhelmed" | "Mind Wandering" | "Sleepy";
 export type TimeOption = "2 min" | "5 min" | "10 min";
 export type SessionStatus = "Not Started" | "Active" | "Finished";
 export type PhaseType = "inhale" | "hold" | "exhale" | "hold_empty";
+export type AfterSessionFeeling = "Stressed" | "Neutral" | "Calm" | "Energized" | null;
 
 export type Phase = {
   type: PhaseType;
