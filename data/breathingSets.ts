@@ -80,7 +80,7 @@ export const breathingSets: BreathingSet[] = [
     title: "Stress Reset",
     intent: "calm",
     feelings: ["Overwhelmed"],
-    times: ["5 min", "10 min"],
+    times: ["2 min", "5 min", "10 min"],
     summary: "Longer exhales to downshift arousal.",
     techniques: [
       {

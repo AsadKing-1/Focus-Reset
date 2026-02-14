@@ -146,7 +146,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     const circleDuration = currentPhase ? Math.max(currentPhase.seconds, 0.4) : 0.4;
 
     return (
-        <div className="w-full py-3">
+        <div className="w-full py-3 animate-fade-in fade-in-delay-1">
             <div className="mx-auto w-full max-w-5xl p-3">
                 <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-[#121820] dark:shadow-black/40">
                     <div className="border-b border-gray-200/70 p-5 dark:border-white/10 md:p-6">
