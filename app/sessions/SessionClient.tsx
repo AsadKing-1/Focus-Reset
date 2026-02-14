@@ -15,7 +15,7 @@ export default function SessionClient() {
     const techId = params.get("tech");
     const selectedTime = params.get("time");
 
-    const [BreathingSession, setBreathingSession] = useState<SessionStatus>("Finished");
+    const [BreathingSession, setBreathingSession] = useState<SessionStatus>("Not Started");
     const [isHydrated, setIsHydrated] = useState(false);
 
     const storageKey = techId ? `breathing-session:${techId}` : null;
@@ -23,8 +23,12 @@ export default function SessionClient() {
     useEffect(() => {
         if (!storageKey || typeof window === "undefined") return;
         const storedSession = localStorage.getItem(storageKey);
-        if (storedSession === "Not Started" || storedSession === "Active" || storedSession === "Finished") {
+        if (storedSession === "Not Started" || storedSession === "Active") {
             setBreathingSession(storedSession);
+        }
+        if (storedSession === "Finished") {
+            localStorage.setItem(storageKey, "Not Started");
+            setBreathingSession("Not Started");
         }
         setIsHydrated(true);
     }, [storageKey]);

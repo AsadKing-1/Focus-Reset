@@ -15,12 +15,12 @@ export default function Home() {
   return (
     <div className="gradient-bg">
       <div className="animate-fade-in fade-in-delay-1 py-18 px-4.5 m-auto flex justify-center flex-col items-center">
-        <h1 className="text-[40px] text-center md:text-[45px] font-extrabold dark:text-white">Take a breath. Let's reset</h1>
-        <p className="text-[16px] md:text-[20px] text-gray-500 dark:text-gray-400 text-center">
+        <h1 className="text-[40px] text-center md:text-[45px] font-extrabold text-slate-500 dark:text-white">Take a breath. Let's reset</h1>
+        <p className="text-[16px] md:text-[18px] font-medium text-slate-400 dark:text-slate-400 text-center">
           Choose how you feel and how much time you have. We'll handle the reset
         </p>
       </div>
-      <div className="max-w-330 mx-auto grid grid-cols-1 gap-4 p-1 md:grid-cols-2">
+      <div className="max-w-300 mx-auto grid grid-cols-1 gap-4 p-1 md:grid-cols-2">
         <div className="animate-fade-in fade-in-delay-2">
           <FeelingSection selectedFeeling={selectedFeeling} onSelectFeeling={setSelectedFeeling} />
         </div>
