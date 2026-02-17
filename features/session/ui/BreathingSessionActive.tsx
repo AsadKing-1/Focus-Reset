@@ -1,8 +1,17 @@
 "use client";
 
+/*
+TODO(масштабируемость/читаемость):
+- Исправить импорт типов на @/entities/breathing/model/types.(выполнено)
+- Разделить компонент: таймер/фазовая математика в хуки, UI в отдельные подкомпоненты.
+- Убрать дублирование логики getPhaseAt: использовать model-функцию из features/session/model.
+- Уйти от selectedTime как строки и от split(" ") в пользу строгого TimeOption.
+*/
+
 import { useEffect, useMemo, useState } from "react";
 
-import type { BreathingTechnique, SessionStatus } from "@/type/types";
+// TODO(ts): путь устарел; использовать "@/entities/breathing/model/types".
+import type { BreathingTechnique, SessionStatus, TimeOption } from "@/entities/breathing/model/types";
 
 type VisualPhase = "inhale" | "hold" | "exhale";
 
@@ -57,16 +66,13 @@ function resolvePhaseType(type: string): VisualPhase {
 
 interface BreathingSessionActiveProps {
     setBreathingSession: (value: SessionStatus) => void;
-    selectedTime: string | null;
+    // TODO(types): после рефактора времени перейти на TimeOption вместо string | null.
+    selectedTime: TimeOption;
     technique: BreathingTechnique;
 }
 
 export default function BreathingSessionActive({ setBreathingSession, selectedTime, technique }: BreathingSessionActiveProps) {
-    const totalSeconds = useMemo(() => {
-        if (!selectedTime) return 0;
-        const minutes = Number.parseInt(selectedTime.split(" ")[0], 10);
-        return Number.isFinite(minutes) ? minutes * 60 : 0;
-    }, [selectedTime]);
+    const totalSeconds = selectedTime * 60;
 
     const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
     const [isRunning, setIsRunning] = useState(totalSeconds > 0);
@@ -77,7 +83,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     }, [totalSeconds]);
 
     useEffect(() => {
-        if (!isRunning || totalSeconds === 0) return;
+        if (!isRunning || totalSeconds === null) return;
 
         const interval = window.setInterval(() => {
             setSecondsLeft((prev) => {
@@ -93,19 +99,20 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     }, [isRunning, totalSeconds]);
 
     useEffect(() => {
-        if (secondsLeft === 0 && totalSeconds > 0) {
+        if (secondsLeft === null && totalSeconds > 0) {
             setBreathingSession("Finished");
         }
     }, [secondsLeft, totalSeconds, setBreathingSession]);
 
     const elapsedSeconds = totalSeconds - secondsLeft;
-    const progress = totalSeconds === 0 ? 0 : ((totalSeconds - secondsLeft) / totalSeconds) * 100;
+    const progress = totalSeconds === null ? 0 : ((totalSeconds - secondsLeft) / totalSeconds) * 100;
     const timeLabel = formatClock(secondsLeft);
     const elapsedLabel = formatClock(elapsedSeconds);
 
     const phaseSnapshot = useMemo(() => {
-        if (!technique.phases?.length || totalSeconds === 0) return null;
+        if (!technique.phases?.length || totalSeconds === null) return null;
 
+        // TODO(ts): после фикса импортов вернуть строгую типизацию reduce (сейчас поднимается implicit any).
         const cycleDuration = technique.phases.reduce((sum, phase) => sum + phase.seconds, 0);
         if (cycleDuration <= 0) return null;
 
@@ -221,6 +228,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
                             <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-white/10 dark:bg-white/5">
                                 <p className="text-[11px] font-extrabold uppercase tracking-wide text-slate-400 dark:text-white/60">Cycle Rhythm</p>
                                 <div className="mt-3 flex flex-wrap gap-2">
+                                    {/* TODO(ts): после фикса импортов implicit any на phase/index должен исчезнуть. */}
                                     {technique.phases.map((phase, index) => {
                                         const isActive = phaseSnapshot?.index === index;
                                         const phaseType = resolvePhaseType(phase.type);

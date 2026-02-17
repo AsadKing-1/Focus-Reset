@@ -1,3 +1,10 @@
+/*
+TODO(нейминг):
+- Исправить опечатки: StartBreatingPreview -> StartBreathingPreview, StarBreating -> StartBreathingPreview.
+- После переименования обновить все импорты и путь из BeforeBreathingSessionStart.
+*/
+
+// TODO(нейминг): исправить опечатку в имени функции на StartBreathingPreview.
 export default function StarBreating() {
     return (
         <div className="w-full h-full flex items-center justify-center p-8 bg-gray-50 text-gray-900 dark:bg-[#151a1f] dark:text-white">

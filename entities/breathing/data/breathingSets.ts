@@ -1,4 +1,10 @@
-import { BreathingSet } from "@/type/types";
+/*
+TODO(данные/типы):
+- Исправить импорт BreathingSet на @/entities/breathing/model/types. (Выполнено)
+- Синхронизировать поле times с типом TimeOption (сейчас в данных строки "2 min", "5 min", "10 min"). (Выполнено)
+- При росте объёма вынести наборы по отдельным файлам (по intent) и собирать их в index.
+*/
+import { BreathingSet } from "../model/types";
 
 export const breathingSets: BreathingSet[] = [
   {
@@ -6,7 +12,7 @@ export const breathingSets: BreathingSet[] = [
     title: "Quick Boost",
     intent: "boost",
     feelings: ["Fatigued", "Sleepy"],
-    times: ["2 min", "5 min"],
+    times: [2, 5],
     summary: "Short energizing cycles to lift alertness.",
     techniques: [
       {
@@ -18,7 +24,8 @@ export const breathingSets: BreathingSet[] = [
           { type: "exhale", seconds: 6, label: "Long exhale" },
         ],
         durationMin: 1,
-        notes: "Two short inhales through nose, one long exhale through mouth. Repeat 6-10 cycles.",
+        notes:
+          "Two short inhales through nose, one long exhale through mouth. Repeat 6-10 cycles.",
       },
       {
         id: "box-4",
@@ -80,7 +87,7 @@ export const breathingSets: BreathingSet[] = [
     title: "Stress Reset",
     intent: "calm",
     feelings: ["Overwhelmed"],
-    times: ["2 min", "5 min", "10 min"],
+    times: [2, 5, 10],
     summary: "Longer exhales to downshift arousal.",
     techniques: [
       {
@@ -151,7 +158,7 @@ export const breathingSets: BreathingSet[] = [
     title: "Focus Reset",
     intent: "focus",
     feelings: ["Mind Wandering"],
-    times: ["2 min", "5 min", "10 min"],
+    times: [2, 5, 10],
     summary: "Even rhythm to stabilize attention.",
     techniques: [
       {
@@ -224,7 +231,7 @@ export const breathingSets: BreathingSet[] = [
     title: "Steady Calm",
     intent: "reset",
     feelings: ["Overwhelmed", "Fatigued"],
-    times: ["10 min"],
+    times: [10],
     summary: "Gentle longer cycles for steady calm.",
     techniques: [
       {

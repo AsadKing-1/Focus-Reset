@@ -1,12 +1,22 @@
 "use client";
 
-import StarBreating from "../StartBreating/StartBreating";
+/*
+TODO(архитектура/контент):
+- Исправить пути импортов после переезда файлов (StartBreatingPreview и типы из entities).(выполнено)
+- Синхронизировать selectedTime с доменным TimeOption (сейчас string | null).(выполнено)
+- Заменить хардкод "Anxious" на реальное выбранное состояние пользователя.(Выполнено)
+- Экранировать кавычки в тексте для react/no-unescaped-entities.
+*/
 
-import type { BreathingTechnique } from "@/type/types";
+import StarBreating from "./StartBreatingPreview";
+
+import { TimeOption } from "@/entities/breathing/model/types";
+
+import type { BreathingTechnique } from "@/entities/breathing/model/types";
 
 interface BeforeBreathingSessionStartProps {
     technique: BreathingTechnique;
-    selectedTime: string | null;
+    selectedTime: TimeOption;
     setBreathingSession: (value: "Not Started" | "Active" | "Finished") => void
 }
 
@@ -57,7 +67,8 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
             </div>
             <div className="flex justify-center items-center gap-2 text-xs text-gray-400 uppercase tracking-widest pb-10 animate-fade-in fade-in-delay-3">
                 <span className="material-symbols-outlined text-sm">info</span>
-                <span>Based on your "Anxious" assessment</span>
+                {/* TODO(lint): экранировать кавычки для react/no-unescaped-entities. */}
+                <span>Based on your Feelings assessment</span>
             </div>
         </div>
     )

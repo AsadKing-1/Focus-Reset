@@ -1,4 +1,12 @@
+/*
+TODO(доступность/архитектура):
+- Исправить импорт типа на @/entities/breathing/model/types.
+- Заменить кликабельные div на button для корректной клавиатурной навигации.
+- Поднять selectedFeeling в родительский компонент, чтобы его можно было сохранить вместе с заметкой.
+*/
+
 import { useState } from "react";
+// TODO(ts): путь устарел; использовать "@/entities/breathing/model/types".
 import { AfterSessionFeeling } from "@/type/types";
 
 const feelings = [
@@ -29,6 +37,7 @@ export default function FeelingAfterSession() {
                 <div className="bg-gray-100 shadow-sm border dark:bg-[#1c2127] border-slate-200 dark:border-slate-800 rounded-2xl flex justify-around items-center p-3">
                     {feelings.map((f) => {
                         return (
+                            {/* TODO(a11y): заменить div на button для управления с клавиатуры и фокуса. */}
                             <div key={f.label} onClick={() => setSelectedFeeling(f.label as AfterSessionFeeling)} className={`w-full transition-all duration-300 flex flex-col justify-center items-center px-3 py-5 ${selectedFeeling === f.label ? 'bg-primary/20 dark:bg-primary/20 rounded-sm' : ''}`}>
                                 <span className="material-symbols-outlined text-2xl text-primary">
                                     {f.icon}
