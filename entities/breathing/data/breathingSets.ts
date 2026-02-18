@@ -1,7 +1,5 @@
 /*
 TODO(данные/типы):
-- Исправить импорт BreathingSet на @/entities/breathing/model/types. (Выполнено)
-- Синхронизировать поле times с типом TimeOption (сейчас в данных строки "2 min", "5 min", "10 min"). (Выполнено)
 - При росте объёма вынести наборы по отдельным файлам (по intent) и собирать их в index.
 */
 import { BreathingSet } from "../model/types";

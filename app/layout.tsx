@@ -2,13 +2,6 @@ import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
-/*
-TODO(архитектура):
-- Заменить ручные <link> шрифтов на next/font для оптимизации и чистого lint. (выполнено)
-- Убрать дубликат подключения Material Symbols (сейчас подключено два раза). (выполнено)
-- Держать <head> минимальным и переносить статические метаданные в Next metadata.(выполнено)
-*/
-
 export const metadata = {
   title: "Focus Reset - Home Check-in",
   icons: { icon: "/icon.png" },

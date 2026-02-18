@@ -16,7 +16,7 @@ export default function ResultView({ onClose, selectedFeeling, selectedTime, rec
         <div className="flex max-h-[92dvh] min-h-0 flex-col gap-4 p-4 sm:p-6">
             <div className="flex items-start justify-between gap-3">
                 <div>
-                    <p className="text-lg font-extrabold">Your breathing set</p>
+                    <p className="text-slate-500 dark:text-white text-lg font-extrabold">Your breathing set</p>
                     <p className="text-sm text-gray-600 dark:text-white/60">Based on your selections</p>
                 </div>
                 <button
@@ -41,14 +41,14 @@ export default function ResultView({ onClose, selectedFeeling, selectedTime, rec
                 ) : (
                     <div>
                         <div className="mb-3">
-                            <p className="text-base font-extrabold">{recommendation.title}</p>
+                            <p className="text-slate-500 dark:text-white text-base font-extrabold">{recommendation.title}</p>
                             <p className="text-sm text-gray-600 dark:text-white/60">{recommendation.summary}</p>
                         </div>
                         <div className="flex flex-col gap-3">
                             {recommendation.techniques.map((technique) => (
-                                <Link key={technique.id} href={{ pathname: "/sessions", query: { tech: technique.id, time: selectedTime ?? "" } }} className="rounded-lg border border-gray-200 bg-gray-50 p-3 flex justify-between items-center transition-all shadow-md duration-300 hover:scale-[1.04] active:scale-100 active:shadow-none dark:border-white/10 dark:bg-black/10">
+                                <Link key={technique.id} href={{ pathname: "/sessions", query: { tech: technique.id, time: selectedTime ?? "" } }} className="rounded-lg border border-gray-200 bg-gray-50 p-3 flex justify-between items-center transition-all shadow-md duration-300 active:scale-100 active:shadow-none dark:border-white/10 dark:bg-black/10">
                                     <div>
-                                        <p className="text-sm font-extrabold">{technique.name}</p>
+                                        <p className="text-slate-500 dark:text-white text-sm font-extrabold">{technique.name}</p>
                                         <p className="text-xs text-gray-600 dark:text-white/60">{formatPhases(technique.phases)}</p>
                                         {technique.notes && (
                                             <p className="text-[11px] text-gray-400 dark:text-white/40">{technique.notes}</p>

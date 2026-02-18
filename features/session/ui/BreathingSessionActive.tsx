@@ -2,16 +2,14 @@
 
 /*
 TODO(масштабируемость/читаемость):
-- Исправить импорт типов на @/entities/breathing/model/types.(выполнено)
 - Разделить компонент: таймер/фазовая математика в хуки, UI в отдельные подкомпоненты.
 - Убрать дублирование логики getPhaseAt: использовать model-функцию из features/session/model.
-- Уйти от selectedTime как строки и от split(" ") в пользу строгого TimeOption.
 */
 
-import { useEffect, useMemo, useState } from "react";
-
-// TODO(ts): путь устарел; использовать "@/entities/breathing/model/types".
+import { useEffect } from "react";
 import type { BreathingTechnique, SessionStatus, TimeOption } from "@/entities/breathing/model/types";
+
+import { useTime } from "@/hooks/useTimerSession";
 
 type VisualPhase = "inhale" | "hold" | "exhale";
 
@@ -52,30 +50,25 @@ const PHASE_STYLES: Record<VisualPhase, {
     },
 };
 
-function formatClock(total: number) {
-    const safe = Math.max(0, total);
-    const minutes = Math.floor(safe / 60);
-    const seconds = safe % 60;
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
-
-function resolvePhaseType(type: string): VisualPhase {
-    if (type === "inhale" || type === "hold" || type === "exhale") return type;
-    return "hold";
-}
-
 interface BreathingSessionActiveProps {
     setBreathingSession: (value: SessionStatus) => void;
-    // TODO(types): после рефактора времени перейти на TimeOption вместо string | null.
     selectedTime: TimeOption;
     technique: BreathingTechnique;
 }
 
 export default function BreathingSessionActive({ setBreathingSession, selectedTime, technique }: BreathingSessionActiveProps) {
-    const totalSeconds = selectedTime * 60;
-
-    const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
-    const [isRunning, setIsRunning] = useState(totalSeconds > 0);
+    const {
+        totalSeconds,
+        secondsLeft,
+        isRunning,
+        setIsRunning,
+        setSecondsLeft,
+        resolvePhaseType,
+        progress,
+        timeLabel,
+        elapsedLabel,
+        phaseSnapshot,
+    } = useTime(selectedTime, technique);
 
     useEffect(() => {
         setSecondsLeft(totalSeconds);
@@ -83,7 +76,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     }, [totalSeconds]);
 
     useEffect(() => {
-        if (!isRunning || totalSeconds === null) return;
+        if (!isRunning || totalSeconds === 0) return;
 
         const interval = window.setInterval(() => {
             setSecondsLeft((prev) => {
@@ -99,47 +92,10 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     }, [isRunning, totalSeconds]);
 
     useEffect(() => {
-        if (secondsLeft === null && totalSeconds > 0) {
+        if (secondsLeft === 0 && totalSeconds > 0) {
             setBreathingSession("Finished");
         }
     }, [secondsLeft, totalSeconds, setBreathingSession]);
-
-    const elapsedSeconds = totalSeconds - secondsLeft;
-    const progress = totalSeconds === null ? 0 : ((totalSeconds - secondsLeft) / totalSeconds) * 100;
-    const timeLabel = formatClock(secondsLeft);
-    const elapsedLabel = formatClock(elapsedSeconds);
-
-    const phaseSnapshot = useMemo(() => {
-        if (!technique.phases?.length || totalSeconds === null) return null;
-
-        // TODO(ts): после фикса импортов вернуть строгую типизацию reduce (сейчас поднимается implicit any).
-        const cycleDuration = technique.phases.reduce((sum, phase) => sum + phase.seconds, 0);
-        if (cycleDuration <= 0) return null;
-
-        const elapsedInCycle = elapsedSeconds % cycleDuration;
-        let acc = 0;
-
-        for (let index = 0; index < technique.phases.length; index += 1) {
-            const phase = technique.phases[index];
-            const start = acc;
-            acc += phase.seconds;
-
-            if (elapsedInCycle < acc) {
-                const phaseElapsed = Math.min(Math.max(elapsedInCycle - start, 0), phase.seconds);
-                const phaseSecondsLeft = Math.max(0, Math.ceil(phase.seconds - phaseElapsed));
-                const phaseProgress = phase.seconds > 0 ? phaseElapsed / phase.seconds : 1;
-                return { phase, index, phaseSecondsLeft, phaseProgress };
-            }
-        }
-
-        const fallbackPhase = technique.phases[technique.phases.length - 1];
-        return {
-            phase: fallbackPhase,
-            index: technique.phases.length - 1,
-            phaseSecondsLeft: 0,
-            phaseProgress: 1,
-        };
-    }, [technique.phases, totalSeconds, elapsedSeconds]);
 
     const currentPhase = phaseSnapshot?.phase ?? null;
     const visualPhase = currentPhase ? resolvePhaseType(currentPhase.type) : "inhale";
@@ -147,9 +103,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     const phaseLabel = currentPhase ? (currentPhase.label ?? PHASE_LABELS[currentPhase.type] ?? "Breathe") : "Get Ready";
     const phaseTimerLabel = phaseSnapshot ? `${phaseSnapshot.phaseSecondsLeft}s` : "--";
     const phaseProgress = phaseSnapshot ? phaseSnapshot.phaseProgress * 100 : 0;
-    const circleScale = currentPhase
-        ? (visualPhase === "inhale" ? 1.06 : visualPhase === "hold" ? 1 : 0.94)
-        : 1;
+    const circleScale = currentPhase ? (visualPhase === "inhale" ? 1.06 : visualPhase === "hold" ? 1 : 0.94) : 1;
     const circleDuration = currentPhase ? Math.max(currentPhase.seconds, 0.4) : 0.4;
 
     return (

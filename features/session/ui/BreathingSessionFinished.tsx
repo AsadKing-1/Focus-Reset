@@ -15,7 +15,6 @@ import InputFeelings from "./InputFeelings";
 
 interface BreathingSessionFinishedProps {
     technique: BreathingTechnique;
-    // TODO(types): синхронизировать с TimeOption вместо string | null.
     selectedTime: TimeOption;
 }
 
@@ -56,7 +55,7 @@ export default function BreathingSessionFinished({ technique, selectedTime }: Br
                                         </div>
                                         <div>
                                             <div className="dark:text-slate-400 text-slate-500 font-extrabold">Duration</div>
-                                            <div className="text-md text-slate-400  font-bold">{selectedTime || `${Math.round(technique.durationMin)} min`}</div>
+                                            <div className="text-md text-slate-400  font-bold">{selectedTime || `${Math.round(technique.durationMin)}`} min</div>
                                         </div>
                                     </div>
                                 </div>

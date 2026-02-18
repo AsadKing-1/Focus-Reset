@@ -8,7 +8,7 @@ TODO(модель):
 export type Feelings = "Fatigued" | "Overwhelmed" | "Mind Wandering" | "Sleepy";
 export type TimeOption = (2 | 5 | 10);
 export type SessionStatus = "Not Started" | "Active" | "Finished";
-export type PhaseType = "inhale" | "hold" | "exhale" | "hold_empty";
+export type PhaseType = "inhale" | "hold" | "exhale";
 export type AfterSessionFeeling =
   | "Stressed"
   | "Neutral"

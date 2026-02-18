@@ -2,10 +2,6 @@
 
 /*
 TODO(типы/читаемость):
-- Исправить импорт типов на @/entities/breathing/model/types. (выполнено)
-- Синхронизировать значения times с TimeOption (сейчас строки "2 min", а доменный тип уже числовой).(выполнено)
-- Переименовать проп findBreathingSystem в более явный onOpenDialog / onFindTechnique. (выполнено)
-- Вынести текст Research в константу/контент-слой, чтобы UI-компонент был проще. (выполнено)
 */
 
 // TODO(ts): путь устарел; заменить на "@/entities/breathing/model/types".

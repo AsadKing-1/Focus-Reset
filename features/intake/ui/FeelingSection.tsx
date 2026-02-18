@@ -1,10 +1,6 @@
 "use client";
 /*
 TODO(доступность/поддержка):
-- Исправить импорт типов на новую доменную модель: @/entities/breathing/model/types. (выполнено)
-- Заменить кликабельный div на button (keyboard support + корректная семантика). (выполнено)
-- Не использовать index как key; лучше key={feeling}. (выполнено)
-- Объединить feelings/icons/descriptions в один типизированный массив объектов.(выполнено)
 */
 import type { Feelings } from "@/entities/breathing/model/types";
 

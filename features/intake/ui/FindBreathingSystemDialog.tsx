@@ -1,14 +1,4 @@
 "use client";
-
-/*
-TODO(масштабируемость):
-- Исправить опечатку в имени файла/компонента: Brigthing -> Breathing. (выполнено)
-- Привести пропы к единому контракту: в интерфейсе isOpen, в реализации используется findBreathingSystem.(выполнено)
-- Разделить компонент на подкомпоненты (LoadingView, SuccessView, ResultView), чтобы уменьшить сложность. (выполнено)
-- Вынести подбор рекомендации и formatPhases в model/lib слой. (выполнено)
-- Избежать setState в начале useEffect для закрытия lint-ошибки react-hooks/set-state-in-effect.(выполнено)
-*/
-
 import { breathingSets } from "@/entities/breathing/data/breathingSets";
 import type { TimeOption, Feelings } from "@/entities/breathing/model/types";
 import { useMemo } from "react";
