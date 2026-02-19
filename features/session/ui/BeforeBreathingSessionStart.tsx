@@ -1,11 +1,6 @@
 "use client";
 
-/*
-TODO(архитектура/контент):
-- Экранировать кавычки в тексте для react/no-unescaped-entities.
-*/
-
-import StarBreating from "./StartBreatingPreview";
+import StarBreatingPreview from "./StartBreatingPreview";
 
 import { TimeOption } from "@/entities/breathing/model/types";
 
@@ -29,7 +24,7 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
                     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-[#121820] dark:shadow-black/40">
                         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr]">
                             <div className="border-b border-gray-200/70 dark:border-white/10 md:border-b-0 md:border-r">
-                                <StarBreating />
+                                <StarBreatingPreview />
                             </div>
                             <div className="p-6 md:p-8">
                                 <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wide text-primary/80">
@@ -64,7 +59,6 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
             </div>
             <div className="flex justify-center items-center gap-2 text-xs text-gray-400 uppercase tracking-widest pb-10 animate-fade-in fade-in-delay-3">
                 <span className="material-symbols-outlined text-sm">info</span>
-                {/* TODO(lint): экранировать кавычки для react/no-unescaped-entities. */}
                 <span>Based on your Feelings assessment</span>
             </div>
         </div>

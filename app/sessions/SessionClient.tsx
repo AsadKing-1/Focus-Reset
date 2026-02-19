@@ -1,22 +1,8 @@
 "use client";
 
-/*
-TODO(архитектура/типы):
-- Обновить импорты после рефактора папок: сейчас используются старые пути @/components, @/data, @/type. (выполнено)
-- Синхронизировать тип времени с новой моделью (TimeOption = 2 | 5 | 10), убрать строковый парсинг "2 min". (выполнено)
-- Логику localStorage вынести в отдельный хук (например useSessionPersistence) для читаемости и тестируемости.
-- Избежать синхронного setState внутри useEffect, чтобы закрыть react-hooks/set-state-in-effect.
-*/
-
-import { useState, useEffect } from "react";
-// TODO(ts): путь устарел после рефактора структуры; использовать entities/breathing/data.
 import { breathingSets } from "@/entities/breathing/data/breathingSets";
 import { useSearchParams } from "next/navigation";
 
-// TODO(ts): путь устарел; использовать entities/breathing/model/types.
-import { SessionStatus } from "@/entities/breathing/model/types";
-
-// TODO(ts): импортировать из features/session/ui/* после переезда файлов.
 import BeforeBreathingSessionStart from "@/features/session/ui/BeforeBreathingSessionStart";
 import BreathingSessionActive from "@/features/session/ui/BreathingSessionActive";
 import BreathingSessionFinished from "@/features/session/ui/BreathingSessionFinished";
@@ -32,8 +18,7 @@ export default function SessionClient() {
         parseTimeOption,
         breathingSession,
         setBreathingSession,
-        isHydrated,
-        setIsHydrated
+        isHydrated
     } = useSessionPersistence(storageKey);
 
     if (!isHydrated) {

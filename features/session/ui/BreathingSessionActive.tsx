@@ -1,11 +1,5 @@
 "use client";
 
-/*
-TODO(масштабируемость/читаемость):
-- Разделить компонент: таймер/фазовая математика в хуки, UI в отдельные подкомпоненты.
-- Убрать дублирование логики getPhaseAt: использовать model-функцию из features/session/model.
-*/
-
 import { useEffect } from "react";
 import type { BreathingTechnique, SessionStatus, TimeOption } from "@/entities/breathing/model/types";
 

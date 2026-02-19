@@ -1,10 +1,5 @@
 "use client";
 
-/*
-TODO(типы/читаемость):
-*/
-
-// TODO(ts): путь устарел; заменить на "@/entities/breathing/model/types".
 import type { TimeOption } from "@/entities/breathing/model/types";
 
 import Research from "./Research";
@@ -12,7 +7,6 @@ import Research from "./Research";
 type TimeSectionProps = {
     selectedTime: TimeOption | null;
     onSelectTime: (time: TimeOption) => void;
-    // TODO(readability): лучше имя onOpenDialog/onFindTechnique вместо findBreathingSystem.
     onFindTechnique: (find: boolean) => void;
 };
 

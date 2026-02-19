@@ -1,7 +1,4 @@
 "use client";
-/*
-TODO(доступность/поддержка):
-*/
 import type { Feelings } from "@/entities/breathing/model/types";
 
 type FeelingSectionProps = {

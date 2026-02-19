@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-/*
-TODO(стили):
-- Уменьшить экстремальные задержки fade-in (до 2.9s), сейчас интерфейс ощущается заторможенным.
-- Вынести повторяющиеся значения анимаций/цветов в токены для единообразия.
-- Проверить контраст в dark-теме для вторичного текста.
-*/
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -52,23 +45,23 @@ TODO(стили):
 }
 
 .fade-in-delay-1 {
-  animation-delay: 0.3s;
+  animation-delay: 0.1s;
 }
 
 .fade-in-delay-2 {
-  animation-delay: 1.1s;
+  animation-delay: 0.8s;
 }
 
 .fade-in-delay-3 {
-  animation-delay: 1.7s;
+  animation-delay: 1.4s;
 }
 
 .fade-in-delay-4 {
-  animation-delay: 2.3s;
+  animation-delay: 2.0s;
 }
 
 .fade-in-delay-5 {
-  animation-delay: 2.9s;
+  animation-delay: 2.6s;
 }
 
 @keyframes fadeIn {

@@ -1,12 +1,5 @@
-/*
-TODO(доступность/архитектура):
-- Исправить импорт типа на @/entities/breathing/model/types.
-- Заменить кликабельные div на button для корректной клавиатурной навигации.
-- Поднять selectedFeeling в родительский компонент, чтобы его можно было сохранить вместе с заметкой.
-*/
-
 import { useState } from "react";
-// TODO(ts): путь устарел; использовать "@/entities/breathing/model/types".
+
 import { AfterSessionFeeling } from "@/entities/breathing/model/types";
 
 const feelings = [
@@ -15,7 +8,6 @@ const feelings = [
     { icon: "sentiment_calm", label: "Calm" },
     { icon: "bolt", label: "Energized" }
 ];
-
 
 export default function FeelingAfterSession() {
 

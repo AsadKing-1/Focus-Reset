@@ -4,7 +4,7 @@ import type {
 } from "@/entities/breathing/model/types";
 import { useState, useEffect } from "react";
 
-export function useSessionPersistence(storageKey: string) {
+export function useSessionPersistence(storageKey: string | null) {
   const [isHydrated, setIsHydrated] = useState(false);
 
   function parseTimeOption(value: string | null): TimeOption {
@@ -25,6 +25,10 @@ export function useSessionPersistence(storageKey: string) {
     if (!storageKey || typeof window === "undefined") return;
     localStorage.setItem(storageKey, breathingSession);
   }, [storageKey, breathingSession]);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   return {
     parseTimeOption,

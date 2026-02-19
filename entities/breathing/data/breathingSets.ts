@@ -1,7 +1,4 @@
-/*
-TODO(данные/типы):
-- При росте объёма вынести наборы по отдельным файлам (по intent) и собирать их в index.
-*/
+
 import { BreathingSet } from "../model/types";
 
 export const breathingSets: BreathingSet[] = [

@@ -2,35 +2,23 @@
 
 /*
 TODO(shared/ux):
-- Заменить <img> на next/image для оптимизации LCP и предупреждения no-img-element.
-- Избежать синхронного setState в useEffect (react-hooks/set-state-in-effect).
-- Вынести логику темы в отдельный useTheme хук для переиспользования.
+- Заменить <img> на next/image для оптимизации LCP и предупреждения no-img-element. (выполнено)
+- Избежать синхронного setState в useEffect (react-hooks/set-state-in-effect). (выполнено)
+- Вынести логику темы в отдельный useTheme хук для переиспользования. (выполнено)
 */
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import image from "@/app/icon.png";
+import Image from "next/image";
+import image from "@/app/icon.png"
 
 export default function Navbar() {
+
     const [isDark, setIsDark] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
     const [menuOpen, setMenuOpen] = useState(false);
-
-    useEffect(() => {
-        const stored = localStorage.getItem("theme");
-        if (stored === "dark" || stored === "light") {
-            const dark = stored === "dark";
-            // TODO(lint): react-hooks/set-state-in-effect — инициализацию темы лучше делать через lazy state.
-            setIsDark(dark);
-            document.documentElement.classList.toggle("dark", dark);
-            return;
-        }
-
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        // TODO(lint): аналогично, setState в effect требует реорганизации инициализации состояния.
-        setIsDark(prefersDark);
-        document.documentElement.classList.toggle("dark", prefersDark);
-    }, []);
 
     function toggleTheme() {
         setIsDark((prev) => {
@@ -40,6 +28,20 @@ export default function Navbar() {
             return next;
         });
     }
+
+    useEffect(() => {
+        const stored = localStorage.getItem("theme");
+        const next =
+            stored === "dark" ||
+            (stored !== "light" &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        setIsDark(next);
+        document.documentElement.classList.toggle("dark", next);
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null; // или скрыть только theme-toggle
 
     const navLinks = [
         { href: "/", label: "Home" },
@@ -53,8 +55,7 @@ export default function Navbar() {
                     <div className="m-auto flex w-full items-center justify-between p-5">
                         <div className="flex items-center gap-2">
                             <div className="size-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-                                {/* TODO(lint/perf): заменить <img> на next/image для no-img-element и LCP. */}
-                                <img src={image.src} alt="Logo" className="w-15 h-10" />
+                                <Image src={image} alt="Logo" className="w-15 h-10" />
                             </div>
                             <span className="font-bold text-[18px] text-slate-500 dark:text-white">Focus Reset</span>
                         </div>

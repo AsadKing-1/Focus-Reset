@@ -1,15 +1,5 @@
-/*
-TODO(фича/ux):
-- Исправить импорты (типы из entities, локальные компоненты из текущей структуры папок).
-- Сделать кнопку "Save and Finish" рабочей: поднять состояние feeling/notes и сохранить результат.
-- Заменить внешний hotlink фона на локальный ассет или next/image.
-- Добавить доступный текстовый эквивалент изображения (не data-alt на div).
-*/
-
-// TODO(ts): путь устарел; использовать "@/entities/breathing/model/types".
 import type { BreathingTechnique, TimeOption } from "@/entities/breathing/model/types";
 
-// TODO(ts): пути устарели после реорганизации папок; обновить относительные импорты.
 import FeelingAfterSession from "./FeelingAfterSession";
 import InputFeelings from "./InputFeelings";
 
@@ -35,7 +25,6 @@ export default function BreathingSessionFinished({ technique, selectedTime }: Br
                                 <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
                                     <span className="material-symbols-outlined text-9xl text-primary opacity-20">air</span>
                                 </div>
-                                {/* TODO(a11y/perf): data-alt на div не работает как alt; использовать <img>/<Image> с alt и локальным asset. */}
                                 <div className="w-full h-48 md:h-full bg-center bg-no-repeat bg-cover" data-alt="Calming abstract waves in shades of blue" style={{ backgroundImage: "url(https://lh3.googleusercontent.com/aida-public/AB6AXuCcH2tsS7rt_ZNJtW5Hg81IzkfNX2OOgCyj9dpFqMwW5F5CSFgEo8hQA6YgEbiBDC3Zq4fcS1tNUIdPXdNRy-dX_U4Wnkt67KzYHfYirZ2HWyzcsSyp_H5_PoTvFcdyE7IzuK3ox4TQiYoDUmL2tOTwE--hozsDvfwsIlSGltdDrtYW_Fb19PV5day08Rx7gRIFCYDtdNwMkZemqD42Ro4lub55Jl5EucY1iELNYeOITsefpif3si6DtegA2adyjb7wheWRIEDrfGYc" }}>
                                 </div>
                             </div>

@@ -8,7 +8,7 @@ TODO(модель):
 export type Feelings = "Fatigued" | "Overwhelmed" | "Mind Wandering" | "Sleepy";
 export type TimeOption = (2 | 5 | 10);
 export type SessionStatus = "Not Started" | "Active" | "Finished";
-export type PhaseType = "inhale" | "hold" | "exhale";
+export type PhaseType = "inhale" | "hold" | "exhale" | "hold_empty";
 export type AfterSessionFeeling =
   | "Stressed"
   | "Neutral"
@@ -20,14 +20,6 @@ export type Phase = {
   type: PhaseType;
   seconds: number;
   label?: string;
-};
-
-// TODO(cleanup): удалить, если тип Technique нигде не используется.
-export type Technique = {
-  name: string;
-  phases: Phase[];
-  cycles?: number;
-  totalSeconds: number;
 };
 
 export type BreathingTechnique = {
