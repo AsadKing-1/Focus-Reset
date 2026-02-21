@@ -1,11 +1,9 @@
-/*
-TODO(читаемость/данные):
-- Сделать компонент управляемым через props (value/onChange), чтобы родитель мог сохранить текст.
-- Добавить ограничение длины и подсчёт символов для предсказуемого UX.
-- При необходимости выделить валидацию в отдельный helper.
-*/
+interface InputFeelingsProps {
+    value: string
+    onChange: (value: string) => void
+}
 
-export default function InputFeelings() {
+export default function InputFeelings({ value, onChange }: InputFeelingsProps) {
     return (
         <div className="w-full max-w-300">
             <div className="flex justify-between items-center pb-2">
@@ -18,8 +16,7 @@ export default function InputFeelings() {
                 </div>
             </div>
             <div>
-                {/* TODO(architecture): сделать value/onChange через props, чтобы родитель мог сохранять текст. */}
-                <textarea placeholder="Briefly capture your current state or any insights from the session..." className="w-full dark:text-white rounded-lg border bg-gray-100 shadow-sm dark:bg-[#1c2127] border-slate-200 dark:border-slate-800 px-3 py-2 h-30 focus:outline-none focus:ring-2 focus:ring-primary/50" />
+                <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder="Briefly capture your current state or any insights from the session..." className="w-full dark:text-white rounded-lg border bg-gray-100 shadow-sm dark:bg-[#1c2127] border-slate-200 dark:border-slate-800 px-3 py-2 h-30 focus:outline-none focus:ring-2 focus:ring-primary/50" />
             </div>
         </div>
     )

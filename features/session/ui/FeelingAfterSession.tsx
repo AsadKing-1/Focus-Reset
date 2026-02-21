@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { AfterSessionFeeling } from "@/entities/breathing/model/types";
 
 const feelings = [
@@ -9,10 +7,13 @@ const feelings = [
     { icon: "bolt", label: "Energized" }
 ];
 
-export default function FeelingAfterSession() {
+interface FeelingAfterSessionProps {
+    value: AfterSessionFeeling;
+    onChange: (value: AfterSessionFeeling) => void;
+}
 
-    const [selectedFeeling, setSelectedFeeling] = useState<AfterSessionFeeling>(null);
 
+export default function FeelingAfterSession({value, onChange}: FeelingAfterSessionProps) {
     return (
         <div className="w-full max-w-300">
             <div className="px-3">
@@ -28,7 +29,7 @@ export default function FeelingAfterSession() {
             <div className="p-3">
                 <div className="bg-gray-100 shadow-sm border dark:bg-[#1c2127] border-slate-200 dark:border-slate-800 rounded-2xl flex justify-around items-center p-3">
                     {feelings.map((f) => (
-                        <button key={f.label} onClick={() => setSelectedFeeling(f.label as AfterSessionFeeling)} className={`w-full transition-all duration-300 flex flex-col justify-center items-center px-3 py-5 ${selectedFeeling === f.label ? 'bg-primary/20 dark:bg-primary/20 rounded-sm' : ''}`}>
+                        <button key={f.label} onClick={() => onChange(f.label as AfterSessionFeeling)} className={`w-full transition-all duration-300 flex flex-col justify-center items-center px-3 py-5 ${value === f.label ? 'bg-primary/20 dark:bg-primary/20 rounded-sm' : ''}`}>
                             <span className="material-symbols-outlined text-2xl text-primary">
                                 {f.icon}
                             </span>

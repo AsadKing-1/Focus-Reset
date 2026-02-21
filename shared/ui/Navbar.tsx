@@ -48,6 +48,9 @@ export default function Navbar() {
         { href: "/history", label: "History" },
     ];
 
+    // TODO(профиль-mvp): показать компактный профиль (имя + дневная цель)
+    // из localStorage по ключу "focusreset:profile:v1".
+
     return (
         <header className="w-full sticky top-0 z-20 bg-background-light dark:bg-background-dark shadow-md">
             <div className="max-w-300 mx-auto">

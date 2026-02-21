@@ -1,5 +1,8 @@
 import type { BreathingTechnique, TimeOption } from "@/entities/breathing/model/types";
 
+import { useState } from "react";
+import type { AfterSessionFeeling } from "@/entities/breathing/model/types";
+
 import FeelingAfterSession from "./FeelingAfterSession";
 import InputFeelings from "./InputFeelings";
 
@@ -8,7 +11,21 @@ interface BreathingSessionFinishedProps {
     selectedTime: TimeOption;
 }
 
+/*
+TODO(следующий-шаг: история):
+- Поднять состояние feeling/notes из дочерних компонентов в этого родителя.
+- Сделать FeelingAfterSession/InputFeelings контролируемыми через value/onChange.
+- На "Save and Finish":
+  1) Собрать payload типа SessionHistoryItem
+  2) Сохранить в localStorage (ключ истории)
+  3) Опционально выполнить переход на /history
+*/
+
 export default function BreathingSessionFinished({ technique, selectedTime }: BreathingSessionFinishedProps) {
+
+    const [notes, setNotes] = useState<string>("");
+    const [feelingAfter, setFeelingAfter] = useState<AfterSessionFeeling>("Neutral")
+
     return (
         <div className="w-full py-3 flex flex-col gap-2">
             <div className="w-full flex justify-center animate-fade-in fade-in-delay-1">
@@ -55,12 +72,18 @@ export default function BreathingSessionFinished({ technique, selectedTime }: Br
             </div>
             <div className="w-full flex justify-center animate-fade-in fade-in-delay-3">
                 <div className="w-full max-w-5xl">
-                    <FeelingAfterSession />
+                    <FeelingAfterSession
+                        value={feelingAfter}
+                        onChange={setFeelingAfter}
+                    />
                 </div>
             </div>
             <div className="w-full flex justify-center animate-fade-in fade-in-delay-4">
                 <div className="w-full max-w-5xl p-3">
-                    <InputFeelings />
+                    <InputFeelings 
+                        value={notes} 
+                        onChange={setNotes} 
+                    />
                 </div>
             </div>
             <div className="w-full p-3 flex justify-center flex-col items-center animate-fade-in fade-in-delay-5">
