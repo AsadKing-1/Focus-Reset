@@ -1,5 +1,9 @@
-import type { BreathingTechnique, TimeOption } from "@/entities/breathing/model/types";
+"use client";
 
+import { useRouter } from "next/navigation";
+
+import { useSessionHistory } from "@/hooks/useSessionHistory";
+import type { BreathingTechnique, TimeOption, SessionHistoryItem } from "@/entities/breathing/model/types";
 import { useState } from "react";
 import type { AfterSessionFeeling } from "@/entities/breathing/model/types";
 
@@ -11,20 +15,30 @@ interface BreathingSessionFinishedProps {
     selectedTime: TimeOption;
 }
 
-/*
-TODO(следующий-шаг: история):
-- Поднять состояние feeling/notes из дочерних компонентов в этого родителя.
-- Сделать FeelingAfterSession/InputFeelings контролируемыми через value/onChange.
-- На "Save and Finish":
-  1) Собрать payload типа SessionHistoryItem
-  2) Сохранить в localStorage (ключ истории)
-  3) Опционально выполнить переход на /history
-*/
 
 export default function BreathingSessionFinished({ technique, selectedTime }: BreathingSessionFinishedProps) {
+    const { createHistorySession } = useSessionHistory()
+    const router = useRouter();
 
     const [notes, setNotes] = useState<string>("");
-    const [feelingAfter, setFeelingAfter] = useState<AfterSessionFeeling>("Neutral")
+    const [feelingAfter, setFeelingAfter] = useState<AfterSessionFeeling>("Neutral");
+
+    const handleSaveAndFinish = () => {
+        const sessionItem: SessionHistoryItem = {
+            id: crypto.randomUUID(),
+            endedAt: new Date().toISOString(),
+            techniqueId: technique.id,
+            techniqueName: technique.name,
+            durationMin: selectedTime,
+            feelingAfter,
+            notes,
+        };
+
+        const isSaved = createHistorySession(sessionItem);
+        if (!isSaved) return;
+
+        router.push("/");
+    };
 
     return (
         <div className="w-full py-3 flex flex-col gap-2">
@@ -87,8 +101,7 @@ export default function BreathingSessionFinished({ technique, selectedTime }: Br
                 </div>
             </div>
             <div className="w-full p-3 flex justify-center flex-col items-center animate-fade-in fade-in-delay-5">
-                {/* TODO(feature): кнопка пока без onClick — сохранить feeling/notes и завершать сценарий явно. */}
-                <button className="flex justify-center transition-all active:translate-y-1 active:shadow-none items-center gap-2 hover:bg-primary/80 bg-primary shadow-lg font-extrabold rounded-2xl p-5 max-w-120 w-full text-white">
+                <button onClick={handleSaveAndFinish} className="flex justify-center transition-all active:translate-y-1 active:shadow-none items-center gap-2 hover:bg-primary/80 bg-primary shadow-lg font-extrabold rounded-2xl p-5 max-w-120 w-full text-white">
                     Save and Finish
                     <span className="material-symbols-outlined">
                         arrow_right_alt

@@ -6,7 +6,7 @@ TODO(модель):
 */
 
 export type Feelings = "Fatigued" | "Overwhelmed" | "Mind Wandering" | "Sleepy";
-export type TimeOption = (2 | 5 | 10);
+export type TimeOption = 2 | 5 | 10;
 export type SessionStatus = "Not Started" | "Active" | "Finished";
 export type PhaseType = "inhale" | "hold" | "exhale" | "hold_empty";
 export type AfterSessionFeeling =
@@ -15,6 +15,16 @@ export type AfterSessionFeeling =
   | "Calm"
   | "Energized"
   | null;
+
+export type SessionHistoryItem = {
+  id: string;
+  endedAt: string;
+  techniqueId: string;
+  techniqueName: string;
+  durationMin: TimeOption;
+  feelingAfter: AfterSessionFeeling,
+  notes: string
+};
 
 export type Phase = {
   type: PhaseType;
