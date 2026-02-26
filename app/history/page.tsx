@@ -1,5 +1,5 @@
-import EmptyStateHistory from "@/features/history/ui/EmptyStateHistory";
+import HistoryContent from "@/features/history/ui/HistoryContent";
 
 export default function HistoryPage() {
-  return <EmptyStateHistory />;
+  return <HistoryContent />;
 }
