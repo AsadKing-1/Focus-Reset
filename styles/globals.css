@@ -3,14 +3,48 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #137fec;
-  --color-background-light: #f6f7f8;
-  --color-background-dark: #101922;
+  --color-primary: #a855f7;
+  --color-accent: #fb923c;
+  --color-background-light: #121024;
+  --color-background-dark: #0a0911;
   --font-display: "Inter";
   --radius: 0.25rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-full: 9999px;
+}
+
+:root {
+  --bg-900: #0a0911;
+  --bg-800: #121024;
+  --bg-700: #1a1630;
+
+  --text-100: #f7f3ff;
+  --text-300: #bdb4cf;
+  --text-500: #8d84a6;
+
+  --violet-500: #8b5cf6;
+  --violet-400: #a78bfa;
+  --orange-500: #f97316;
+  --orange-400: #fb923c;
+  --brand-gradient: linear-gradient(
+    135deg,
+    #7c3aed 0%,
+    #a855f7 38%,
+    #fb923c 74%,
+    #f97316 100%
+  );
+  --brand-gradient-soft: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.28) 0%,
+    rgba(168, 85, 247, 0.22) 38%,
+    rgba(251, 146, 60, 0.2) 74%,
+    rgba(249, 115, 22, 0.2) 100%
+  );
+
+  --glass: rgba(255, 255, 255, 0.07);
+  --glass-hover: rgba(255, 255, 255, 0.11);
+  --glass-border: rgba(255, 255, 255, 0.18);
 }
 
 @layer base {
@@ -21,6 +55,8 @@
       -apple-system,
       "Segoe UI",
       sans-serif;
+    background-color: var(--bg-900);
+    color: var(--text-100);
   }
 }
 
@@ -76,9 +112,66 @@
 }
 
 .gradient-bg {
-  background: radial-gradient(circle at 50% 50%, #f6f7f8 0%, #e9edf1 100%);
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0) 55%),
+    radial-gradient(120% 100% at 100% 100%, rgba(249, 115, 22, 0.2) 0%, rgba(249, 115, 22, 0) 55%),
+    linear-gradient(160deg, #0a0911 0%, #121024 52%, #1a1630 100%);
 }
 
 .dark .gradient-bg {
-  background: radial-gradient(circle at 50% 50%, #1a2a3a 0%, #101922 100%);
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(139, 92, 246, 0.24) 0%, rgba(139, 92, 246, 0) 55%),
+    radial-gradient(120% 100% at 100% 100%, rgba(249, 115, 22, 0.24) 0%, rgba(249, 115, 22, 0) 55%),
+    linear-gradient(160deg, #08070f 0%, #100e21 52%, #17132c 100%);
+}
+
+.bg-brand-gradient {
+  background-image: var(--brand-gradient);
+}
+
+.text-brand-gradient {
+  background-image: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Make "main color" surfaces use the brand gradient instead of a flat color. */
+.bg-primary {
+  background-image: var(--brand-gradient);
+  background-color: transparent;
+}
+
+.hover\:bg-primary\/80:hover {
+  background-image: var(--brand-gradient);
+  filter: brightness(1.08) saturate(1.05);
+}
+
+/* Gradient border utility:
+   use `border-gradient` + optionally `border-gradient-2` for thicker stroke. */
+.border-gradient {
+  position: relative;
+}
+
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: var(--gradient-border-width, 5px);
+  border-radius: inherit;
+  background: var(--brand-gradient);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.border-gradient-2 {
+  --gradient-border-width: 2px;
+}
+
+.border-gradient-soft::before {
+  background: var(--brand-gradient-soft);
 }

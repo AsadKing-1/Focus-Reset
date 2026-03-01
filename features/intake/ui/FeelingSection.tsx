@@ -42,10 +42,10 @@ export default function FeelingSection({ selectedFeeling, onSelectFeeling }: Fee
         }
     ];
 
-    const noneActiveCard = "rounded-2xl border border-gray-200/50 bg-white/20 p-4 shadow-lg shadow-black/20 backdrop-blur-md dark:border-white/10 dark:bg-[#1c2127]";
+    const noneActiveCard = "rounded-2xl bg-(--bg-800) p-4 shadow-lg shadow-black/20 backdrop-blur-md";
     const noneActiveCardIcon = "border bg-gray-200/50 border-gray-200 rounded-md p-3 mb-2 text-slate-500 dark:text-white dark:bg-white/5 dark:border-white/10";
 
-    const activeCard = "rounded-2xl bg-primary/5 border border-primary p-4 shadow-lg shadow-black/20 backdrop-blur-md";
+    const activeCard = "rounded-2xl bg-(--bg-800) border-gradient p-4 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300";
     const activeCardIcon = "border bg-primary/20 border-primary text-primary rounded-md p-3 mb-2";
 
     return (
@@ -58,7 +58,7 @@ export default function FeelingSection({ selectedFeeling, onSelectFeeling }: Fee
             </div>
             <div className="w-full grid grid-cols-1 gap-4 p-3.5 md:grid-cols-2">
                 {FeelingCardGroup.map((feeling, _) => (
-                    <button onClick={() => onSelectFeeling(feeling.feeling)} key={feeling.feeling} className={`transition-all duration-300 relative text-left ${selectedFeeling === feeling.feeling ? activeCard : noneActiveCard}`}>
+                    <button onClick={() => onSelectFeeling(feeling.feeling)} key={feeling.feeling} className={`transition-all duration-500 relative text-left ${selectedFeeling === feeling.feeling ? activeCard : noneActiveCard}`}>
                         <div>
                             <span className={`material-symbols-outlined ${selectedFeeling === feeling.feeling ? activeCardIcon : noneActiveCardIcon}`}>
                                 {feeling.icon}

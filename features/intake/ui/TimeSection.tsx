@@ -24,9 +24,9 @@ export default function TimeSection({ selectedTime, onSelectTime, onFindTechniqu
                 <span className="text-slate-500 font-extrabold dark:text-white">How much time do you have?</span>
             </div>
             <div className="p-3 w-full">
-                <div className="grid grid-cols-3 gap-2 rounded-md bg-gray-200/10 border border-gray-200 dark:bg-[#1c2127] dark:border-white/10 p-3">
+                <div className="grid grid-cols-3 gap-2 rounded-md gradient-bg dark:bg-[#1c2127] p-3">
                     {times.map((t) => (
-                        <button onClick={() => onSelectTime(t)} key={t} className={`transition-all duration-300 ${selectedTime === t ? "border border-primary text-white font-extrabold rounded-md bg-primary" : noneActiveButton}`}>
+                        <button onClick={() => onSelectTime(t)} key={t} className={`transition-all duration-300 ${selectedTime === t ? "border-gradient font-extrabold rounded-md" : noneActiveButton}`}>
                             {t} min
                         </button>
                     ))}
@@ -34,7 +34,7 @@ export default function TimeSection({ selectedTime, onSelectTime, onFindTechniqu
             </div>
             <Research/>
             <div className="p-3">
-                <button onClick={() => onFindTechnique(true)} className="w-full flex justify-center items-center gap-4 p-7 rounded-md text-[20px] bg-primary text-white font-extrabold shadow-2xl shadow-primary/20 active:translate-y-1 transition-all duration-100">
+                <button onClick={() => onFindTechnique(true)} className="w-full flex justify-center items-center gap-4 p-7 rounded-4xl text-[20px] bg-(--bg-800) border-gradient text-white font-extrabold shadow-2xl shadow-primary/20 active:translate-y-1 transition-all duration-100">
                     Find Technique
                     <span className="material-symbols-outlined text-2xl">arrow_forward</span>
                 </button>
