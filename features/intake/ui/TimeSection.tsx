@@ -13,7 +13,7 @@ type TimeSectionProps = {
 export default function TimeSection({ selectedTime, onSelectTime, onFindTechnique }: TimeSectionProps) {
     const times: TimeOption[] = [2, 5, 10];
 
-    const noneActiveButton = "w-full shadow-lg shadow-black/20 text-slate-500 dark:text-white rounded-md border font-bold border-gray-200/50 bg-white/20 p-4 shadow-lg shadow-black/20 backdrop-blur-md dark:border-white/10 dark:bg-white/5";
+    const noneActiveButton = "w-full text-white rounded-md border border-white/10 bg-(--bg-800) p-4 font-bold shadow-lg shadow-black/20";
 
     return (
         <div className="w-full">
@@ -26,7 +26,7 @@ export default function TimeSection({ selectedTime, onSelectTime, onFindTechniqu
             <div className="p-3 w-full">
                 <div className="grid grid-cols-3 gap-2 rounded-md gradient-bg dark:bg-[#1c2127] p-3">
                     {times.map((t) => (
-                        <button onClick={() => onSelectTime(t)} key={t} className={`transition-all duration-300 ${selectedTime === t ? "border-gradient font-extrabold rounded-md" : noneActiveButton}`}>
+                        <button onClick={() => onSelectTime(t)} key={t} className={`transition-colors duration-200 ${selectedTime === t ? "border-gradient font-extrabold rounded-md bg-(--bg-800)" : noneActiveButton}`}>
                             {t} min
                         </button>
                     ))}

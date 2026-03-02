@@ -157,7 +157,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  padding: var(--gradient-border-width, 5px);
+  padding: var(--gradient-border-width, 1px);
   border-radius: inherit;
   background: var(--brand-gradient);
   -webkit-mask:
@@ -169,7 +169,7 @@
 }
 
 .border-gradient-2 {
-  --gradient-border-width: 2px;
+  --gradient-border-width: 1px;
 }
 
 .border-gradient-soft::before {

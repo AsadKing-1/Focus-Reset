@@ -42,13 +42,13 @@ export default function FeelingSection({ selectedFeeling, onSelectFeeling }: Fee
         }
     ];
 
-    const noneActiveCard = "rounded-2xl bg-(--bg-800) p-4 shadow-lg shadow-black/20 backdrop-blur-md";
+    const noneActiveCard = "rounded-2xl bg-(--bg-800) border border-white/10 p-4 shadow-lg shadow-black/20";
     const noneActiveCardIcon = "border bg-gray-200/50 border-gray-200 rounded-md p-3 mb-2 text-slate-500 dark:text-white dark:bg-white/5 dark:border-white/10";
 
-    const activeCard = "rounded-2xl bg-(--bg-800) border-gradient p-4 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300";
+    const activeCard = "rounded-2xl bg-(--bg-800) border-gradient p-4 shadow-lg shadow-black/20 transition-colors duration-200";
     const activeCardIcon = "border bg-primary/20 border-primary text-primary rounded-md p-3 mb-2";
 
-    return (
+    return (    
         <div>
             <div className="flex items-center gap-2 px-4 py-2">
                 <span className="material-symbols-outlined size-6 text-primary">
@@ -57,8 +57,8 @@ export default function FeelingSection({ selectedFeeling, onSelectFeeling }: Fee
                 <span className="text-slate-500 font-extrabold dark:text-white">How are you feeling?</span>
             </div>
             <div className="w-full grid grid-cols-1 gap-4 p-3.5 md:grid-cols-2">
-                {FeelingCardGroup.map((feeling, _) => (
-                    <button onClick={() => onSelectFeeling(feeling.feeling)} key={feeling.feeling} className={`transition-all duration-500 relative text-left ${selectedFeeling === feeling.feeling ? activeCard : noneActiveCard}`}>
+                {FeelingCardGroup.map((feeling) => (
+                    <button onClick={() => onSelectFeeling(feeling.feeling)} key={feeling.feeling} className={`transition-colors duration-200 relative text-left ${selectedFeeling === feeling.feeling ? activeCard : noneActiveCard}`}>
                         <div>
                             <span className={`material-symbols-outlined ${selectedFeeling === feeling.feeling ? activeCardIcon : noneActiveCardIcon}`}>
                                 {feeling.icon}

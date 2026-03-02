@@ -103,7 +103,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
     return (
         <div className="w-full py-3 animate-fade-in fade-in-delay-1">
             <div className="mx-auto w-full max-w-5xl p-3">
-                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-[#121820] dark:shadow-black/40">
+                <div className="overflow-hidden rounded-2xl bg-(--bg-800) dark:shadow-black/40">
                     <div className="border-b border-gray-200/70 p-5 dark:border-white/10 md:p-6">
                         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                             <div>
@@ -176,7 +176,6 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
                             <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-white/10 dark:bg-white/5">
                                 <p className="text-[11px] font-extrabold uppercase tracking-wide text-slate-400 dark:text-white/60">Cycle Rhythm</p>
                                 <div className="mt-3 flex flex-wrap gap-2">
-                                    {/* TODO(ts): после фикса импортов implicit any на phase/index должен исчезнуть. */}
                                     {technique.phases.map((phase, index) => {
                                         const isActive = phaseSnapshot?.index === index;
                                         const phaseType = resolvePhaseType(phase.type);
@@ -201,7 +200,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
                     <div className="flex flex-col gap-3 px-5 pb-6 md:flex-row md:px-6">
                         <button
                             onClick={() => setIsRunning((prev) => !prev)}
-                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 font-extrabold text-white shadow-lg shadow-primary/20 transition-all duration-150 active:translate-y-1 active:shadow-none"
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-(--bg-800) p-4 font-extrabold text-white border-gradient transition-all duration-150 active:translate-y-1 active:shadow-none"
                         >
                             <span className="material-symbols-outlined">{isRunning ? "pause" : "play_arrow"}</span>
                             <span>{isRunning ? "Pause Session" : "Resume Session"}</span>

@@ -25,7 +25,7 @@ export default function Home() {
     <div>
       <div className="animate-fade-in fade-in-delay-1 py-18 px-4.5 m-auto flex justify-center flex-col items-center">
         <h1 className="text-[40px] text-center md:text-[45px] font-extrabold text-slate-500 dark:text-white">Take a breath. Lets reset</h1>
-        <p className="text-[16px] md:text-[18px] font-medium text-slate-400 dark:text-slate-400 text-center">
+        <p className="text-[16px] md:text-[18px] font-medium text-slate-100 dark:text-slate-400 text-center">
           Choose how you feel and how much time you have. Well handle the reset
         </p>
       </div>

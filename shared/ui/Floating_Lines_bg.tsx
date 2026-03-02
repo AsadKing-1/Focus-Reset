@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
   Scene,
   OrthographicCamera,
@@ -204,6 +204,10 @@ void main() {
 `;
 
 const MAX_GRADIENT_STOPS = 8;
+const DEFAULT_ENABLED_WAVES: Array<'top' | 'middle' | 'bottom'> = ['top', 'middle', 'bottom'];
+const DEFAULT_LINE_COUNT: number[] = [6];
+const DEFAULT_LINE_DISTANCE: number[] = [5];
+const DEFAULT_BOTTOM_WAVE_POSITION: WavePosition = { x: 2.0, y: -0.7, rotate: -1 };
 
 type WavePosition = {
   x: number;
@@ -227,6 +231,8 @@ type FloatingLinesProps = {
   parallax?: boolean;
   parallaxStrength?: number;
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
+  maxFps?: number;
+  maxPixelRatio?: number;
 };
 
 function hexToVec3(hex: string): Vector3 {
@@ -255,12 +261,12 @@ function hexToVec3(hex: string): Vector3 {
 
 export default function FloatingLines({
   linesGradient,
-  enabledWaves = ['top', 'middle', 'bottom'],
-  lineCount = [6],
-  lineDistance = [5],
+  enabledWaves = DEFAULT_ENABLED_WAVES,
+  lineCount = DEFAULT_LINE_COUNT,
+  lineDistance = DEFAULT_LINE_DISTANCE,
   topWavePosition,
   middleWavePosition,
-  bottomWavePosition = { x: 2.0, y: -0.7, rotate: -1 },
+  bottomWavePosition = DEFAULT_BOTTOM_WAVE_POSITION,
   animationSpeed = 1,
   interactive = true,
   bendRadius = 5.0,
@@ -268,7 +274,9 @@ export default function FloatingLines({
   mouseDamping = 0.05,
   parallax = true,
   parallaxStrength = 0.2,
-  mixBlendMode = 'screen'
+  mixBlendMode = 'screen',
+  maxFps,
+  maxPixelRatio
 }: FloatingLinesProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const targetMouseRef = useRef<Vector2>(new Vector2(-1000, -1000));
@@ -277,51 +285,76 @@ export default function FloatingLines({
   const currentInfluenceRef = useRef<number>(0);
   const targetParallaxRef = useRef<Vector2>(new Vector2(0, 0));
   const currentParallaxRef = useRef<Vector2>(new Vector2(0, 0));
+  const enabledWavesSet = useMemo(() => new Set(enabledWaves), [enabledWaves]);
+  const normalizedLineGradient = useMemo(
+    () => (linesGradient && linesGradient.length > 0 ? linesGradient.slice(0, MAX_GRADIENT_STOPS) : []),
+    [linesGradient]
+  );
+  const topWaveX = topWavePosition?.x ?? 10.0;
+  const topWaveY = topWavePosition?.y ?? 0.5;
+  const topWaveRotate = topWavePosition?.rotate ?? -0.4;
+  const middleWaveX = middleWavePosition?.x ?? 5.0;
+  const middleWaveY = middleWavePosition?.y ?? 0.0;
+  const middleWaveRotate = middleWavePosition?.rotate ?? 0.2;
+  const bottomWaveX = bottomWavePosition?.x ?? 2.0;
+  const bottomWaveY = bottomWavePosition?.y ?? -0.7;
+  const bottomWaveRotate = bottomWavePosition?.rotate ?? 0.4;
 
   const getLineCount = (waveType: 'top' | 'middle' | 'bottom'): number => {
     if (typeof lineCount === 'number') return lineCount;
-    if (!enabledWaves.includes(waveType)) return 0;
+    if (!enabledWavesSet.has(waveType)) return 0;
     const index = enabledWaves.indexOf(waveType);
     return lineCount[index] ?? 6;
   };
 
   const getLineDistance = (waveType: 'top' | 'middle' | 'bottom'): number => {
     if (typeof lineDistance === 'number') return lineDistance;
-    if (!enabledWaves.includes(waveType)) return 0.1;
+    if (!enabledWavesSet.has(waveType)) return 0.1;
     const index = enabledWaves.indexOf(waveType);
     return lineDistance[index] ?? 0.1;
   };
 
-  const topLineCount = enabledWaves.includes('top') ? getLineCount('top') : 0;
-  const middleLineCount = enabledWaves.includes('middle') ? getLineCount('middle') : 0;
-  const bottomLineCount = enabledWaves.includes('bottom') ? getLineCount('bottom') : 0;
+  const topLineCount = enabledWavesSet.has('top') ? getLineCount('top') : 0;
+  const middleLineCount = enabledWavesSet.has('middle') ? getLineCount('middle') : 0;
+  const bottomLineCount = enabledWavesSet.has('bottom') ? getLineCount('bottom') : 0;
 
-  const topLineDistance = enabledWaves.includes('top') ? getLineDistance('top') * 0.01 : 0.01;
-  const middleLineDistance = enabledWaves.includes('middle') ? getLineDistance('middle') * 0.01 : 0.01;
-  const bottomLineDistance = enabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
+  const topLineDistance = enabledWavesSet.has('top') ? getLineDistance('top') * 0.01 : 0.01;
+  const middleLineDistance = enabledWavesSet.has('middle') ? getLineDistance('middle') * 0.01 : 0.01;
+  const bottomLineDistance = enabledWavesSet.has('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const containerEl = containerRef.current;
+    if (!containerEl) return;
 
     const scene = new Scene();
 
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowPowerDevice = typeof navigator !== 'undefined' && navigator.hardwareConcurrency <= 4;
+    const targetFps = Math.max(12, Math.min(maxFps ?? (prefersReducedMotion ? 20 : interactive || parallax ? 45 : 30), 60));
+    const frameIntervalMs = 1000 / targetFps;
+    const dprCap = maxPixelRatio ?? (isLowPowerDevice ? 1 : 1.25);
+
+    const renderer = new WebGLRenderer({
+      antialias: false,
+      alpha: false,
+      powerPreference: 'low-power'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
-    containerRef.current.appendChild(renderer.domElement);
+    containerEl.appendChild(renderer.domElement);
 
     const uniforms = {
       iTime: { value: 0 },
       iResolution: { value: new Vector3(1, 1, 1) },
       animationSpeed: { value: animationSpeed },
 
-      enableTop: { value: enabledWaves.includes('top') },
-      enableMiddle: { value: enabledWaves.includes('middle') },
-      enableBottom: { value: enabledWaves.includes('bottom') },
+      enableTop: { value: enabledWavesSet.has('top') },
+      enableMiddle: { value: enabledWavesSet.has('middle') },
+      enableBottom: { value: enabledWavesSet.has('bottom') },
 
       topLineCount: { value: topLineCount },
       middleLineCount: { value: middleLineCount },
@@ -332,20 +365,20 @@ export default function FloatingLines({
       bottomLineDistance: { value: bottomLineDistance },
 
       topWavePosition: {
-        value: new Vector3(topWavePosition?.x ?? 10.0, topWavePosition?.y ?? 0.5, topWavePosition?.rotate ?? -0.4)
+        value: new Vector3(topWaveX, topWaveY, topWaveRotate)
       },
       middleWavePosition: {
         value: new Vector3(
-          middleWavePosition?.x ?? 5.0,
-          middleWavePosition?.y ?? 0.0,
-          middleWavePosition?.rotate ?? 0.2
+          middleWaveX,
+          middleWaveY,
+          middleWaveRotate
         )
       },
       bottomWavePosition: {
         value: new Vector3(
-          bottomWavePosition?.x ?? 2.0,
-          bottomWavePosition?.y ?? -0.7,
-          bottomWavePosition?.rotate ?? 0.4
+          bottomWaveX,
+          bottomWaveY,
+          bottomWaveRotate
         )
       },
 
@@ -365,11 +398,10 @@ export default function FloatingLines({
       lineGradientCount: { value: 0 }
     };
 
-    if (linesGradient && linesGradient.length > 0) {
-      const stops = linesGradient.slice(0, MAX_GRADIENT_STOPS);
-      uniforms.lineGradientCount.value = stops.length;
+    if (normalizedLineGradient.length > 0) {
+      uniforms.lineGradientCount.value = normalizedLineGradient.length;
 
-      stops.forEach((hex, i) => {
+      normalizedLineGradient.forEach((hex, i) => {
         const color = hexToVec3(hex);
         uniforms.lineGradient.value[i].set(color.x, color.y, color.z);
       });
@@ -388,9 +420,8 @@ export default function FloatingLines({
     const clock = new Clock();
 
     const setSize = () => {
-      const el = containerRef.current!;
-      const width = el.clientWidth || 1;
-      const height = el.clientHeight || 1;
+      const width = containerEl.clientWidth || 1;
+      const height = containerEl.clientHeight || 1;
 
       renderer.setSize(width, height, false);
 
@@ -403,8 +434,8 @@ export default function FloatingLines({
 
     const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(setSize) : null;
 
-    if (ro && containerRef.current) {
-      ro.observe(containerRef.current);
+    if (ro) {
+      ro.observe(containerEl);
     }
 
     const handlePointerMove = (event: PointerEvent) => {
@@ -435,7 +466,21 @@ export default function FloatingLines({
     }
 
     let raf = 0;
-    const renderLoop = () => {
+    let isPageVisible = document.visibilityState === 'visible';
+    let lastRenderTime = 0;
+
+    const handleVisibilityChange = () => {
+      isPageVisible = document.visibilityState === 'visible';
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const renderLoop = (now: number) => {
+      raf = requestAnimationFrame(renderLoop);
+      if (!isPageVisible) return;
+      if (now - lastRenderTime < frameIntervalMs) return;
+      lastRenderTime = now;
+
       uniforms.iTime.value = clock.getElapsedTime();
 
       if (interactive) {
@@ -452,13 +497,13 @@ export default function FloatingLines({
       }
 
       renderer.render(scene, camera);
-      raf = requestAnimationFrame(renderLoop);
     };
-    renderLoop();
+    raf = requestAnimationFrame(renderLoop);
 
     return () => {
       cancelAnimationFrame(raf);
-      if (ro && containerRef.current) {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (ro) {
         ro.disconnect();
       }
 
@@ -475,20 +520,32 @@ export default function FloatingLines({
       }
     };
   }, [
-    linesGradient,
-    enabledWaves,
-    lineCount,
-    lineDistance,
-    topWavePosition,
-    middleWavePosition,
-    bottomWavePosition,
     animationSpeed,
     interactive,
     bendRadius,
     bendStrength,
     mouseDamping,
     parallax,
-    parallaxStrength
+    parallaxStrength,
+    maxFps,
+    maxPixelRatio,
+    topLineCount,
+    middleLineCount,
+    bottomLineCount,
+    topLineDistance,
+    middleLineDistance,
+    bottomLineDistance,
+    topWaveX,
+    topWaveY,
+    topWaveRotate,
+    middleWaveX,
+    middleWaveY,
+    middleWaveRotate,
+    bottomWaveX,
+    bottomWaveY,
+    bottomWaveRotate,
+    normalizedLineGradient,
+    enabledWavesSet
   ]);
 
   return (

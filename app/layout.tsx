@@ -26,11 +26,13 @@ export default function RootLayout({
           <FloatingLines
             interactive={false}
             parallax={false}
-            animationSpeed={0.55}
-            lineCount={[12, 10, 8]}
-            lineDistance={[7, 9, 11]}
+            animationSpeed={0.45}
+            lineCount={[8, 6, 4]}
+            lineDistance={[7, 9, 10]}
             linesGradient={["#7C3AED", "#A855F7", "#C084FC", "#FB923C", "#F97316"]}
             mixBlendMode="screen"
+            maxFps={30}
+            maxPixelRatio={1}
           />
           <div className="absolute inset-0 bg-black/20" />
         </div>

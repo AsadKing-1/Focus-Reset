@@ -24,7 +24,7 @@ export default function HistoryContent() {
     return (
         <section className="w-full px-3 py-8 md:py-12 animate-fade-in fade-in-delay-1">
             <div className="mx-auto w-full max-w-5xl">
-                <div className="mb-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-[#121820]">
+                <div className="mb-4 rounded-2xl p-5 shadow-sm bg-(--bg-800)">
                     <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary/80">
                         Session History
                     </p>

@@ -29,7 +29,7 @@ export default function SessionHistoryItems({ item }: SessionHistoryItemsProps) 
   const hasNotes = item.notes.trim().length > 0;
 
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800 dark:bg-[#1c2127]">
+    <article className="rounded-2xl p-5 shadow-sm transition-shadow hover:shadow-md bg-(--bg-800) border-gradient">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-primary/80">

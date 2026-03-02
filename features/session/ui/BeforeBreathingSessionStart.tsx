@@ -21,9 +21,9 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
             </div>
             <div className="p-3 pb-10 animate-fade-in fade-in-delay-2">
                 <div className="mx-auto w-full max-w-5xl">
-                    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-[#121820] dark:shadow-black/40">
+                    <div className="overflow-hidden rounded-2xl bg-(--bg-800)  shadow-2xl shadow-black/10 dark:shadow-black/40">
                         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr]">
-                            <div className="border-b border-gray-200/70 dark:border-white/10 md:border-b-0 md:border-r">
+                            <div className="border-r border-r-[#120012]">
                                 <StarBreatingPreview />
                             </div>
                             <div className="p-6 md:p-8">
@@ -47,7 +47,7 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
                                         Sharpens Focus
                                     </span>
                                 </div>
-                                <button onClick={() => setBreathingSession("Active")} className="flex justify-center items-center mt-6 w-full rounded-xl bg-primary px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-primary/30 transition duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                                <button onClick={() => setBreathingSession("Active")} className="flex justify-center items-center mt-6 w-full rounded-xl bg-(--bg-800) border-gradient px-5 py-3 text-sm font-extrabold text-white shadow-lg transition duration-200 hover:-translate-y-0.5 active:translate-y-0">
                                     <span className="material-symbols-outlined text-lg align-[-2px]">play_arrow</span>
                                     <span className="ml-2">Start Session</span>
                                 </button>
@@ -57,7 +57,7 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center items-center gap-2 text-xs text-gray-400 uppercase tracking-widest pb-10 animate-fade-in fade-in-delay-3">
+            <div className="flex justify-center items-center gap-2 text-[10px] text-gray-400 uppercase tracking-widest pb-10 animate-fade-in fade-in-delay-3">
                 <span className="material-symbols-outlined text-sm">info</span>
                 <span>Based on your Feelings assessment</span>
             </div>
