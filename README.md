@@ -1,152 +1,108 @@
 # Focus Reset
 
-> Focus Reset — одна осознанная пауза между хаосом и фокусом.
+Focus Reset - веб-приложение для коротких дыхательных сессий, когда нужно быстро снять перегруз и вернуть концентрацию.
 
-Focus Reset — это приложение для дыхательных практик на Next.js (App Router).
-Оно помогает выбрать текущее состояние и доступное время, а затем запускает подходящую сессию дыхания.
+## Зачем нужен проект
 
-## Что делает приложение
+Когда голова "перегрета", сложно сразу вернуться в рабочий ритм.  
+Этот проект помогает сделать короткий осознанный reset:
 
-- На главной странице:
-  - выбор состояния (`Fatigued`, `Overwhelmed`, `Mind Wandering`, `Sleepy`)
-  - выбор длительности (`2`, `5`, `10` минут)
-  - открытие окна с рекомендациями
-- Подбор рекомендаций:
-  - поиск дыхательного набора по связке `feeling + time`
-  - показ подходящих техник
-  - переход в сессию через query-параметры
-- Сценарий сессии (`/sessions`):
-  - экран перед стартом
-  - активная сессия с таймером и фазами дыхания
-  - экран завершения
-- Хранение состояния:
-  - тема в `localStorage` (`theme`)
-  - статус сессии по технике в `localStorage` (`breathing-session:<techId>`)
+- выбрать текущее состояние;
+- выбрать доступное время;
+- получить подходящие дыхательные техники;
+- пройти сессию с таймером и фазами;
+- сохранить результат в истории.
+
+## Что умеет сейчас
+
+- Подбор набора техник по связке `состояние + время`.
+- Пошаговая сессия дыхания с общим таймером и таймером текущей фазы.
+- Прогресс-бар сессии и отдельный прогресс текущей фазы.
+- Управление сессией: пауза, продолжение, досрочное завершение.
+- Завершение сессии с отметкой самочувствия и заметкой.
+- Автосохранение истории сессий в `localStorage`.
+- Экран истории со списком завершённых сессий (новые сверху).
+
+## Пользовательский поток
+
+1. На главной странице выбираешь состояние (`Fatigued`, `Overwhelmed`, `Mind Wandering`, `Sleepy`) и время (`2`, `5`, `10` минут).
+2. В модалке показывается рекомендованный набор и список техник.
+3. Выбираешь технику и переходишь на `/sessions`.
+4. Проходишь сессию: экран старта -> активная сессия -> экран завершения.
+5. После `Save and Finish` запись попадает в историю (`/history`).
 
 ## Маршруты
 
-- `/` — главная страница с выбором состояния и времени
-- `/sessions?tech=<technique-id>&time=<2|5|10>` — экран сессии
-- `/history` — страница истории (пока заглушка)
+- `/` - чек-ин и подбор техник.
+- `/sessions?tech=<technique-id>&time=<2|5|10>` - экран сессии.
+- `/history` - история завершённых сессий.
+
+## Хранение данных
+
+Проект сейчас полностью клиентский, без backend.
+
+- `breathing-session:<technique-id>` - состояние текущей сессии (в `localStorage`).
+- `focusreset:session-history:v1` - массив завершённых сессий (в `localStorage`).
+
+Каждая запись истории содержит:
+
+- `endedAt`
+- `techniqueId`, `techniqueName`
+- `durationMin`
+- `feelingAfter` (`Stressed | Neutral | Calm | Energized`)
+- `notes`
 
 ## Технологии
 
 - Next.js 16 (App Router)
 - React 19
-- TypeScript (strict mode)
+- TypeScript (strict)
 - Tailwind CSS 4
-- ESLint 9 + `eslint-config-next`
+- Three.js (анимированный фон)
+- ESLint 9
 
 ## Структура проекта
 
 ```text
-app/
-  layout.tsx
-  page.tsx
-  sessions/
-    page.tsx
-    SessionClient.tsx
-  history/
-    page.tsx
-
-entities/
-  breathing/
-    model/types.ts
-    data/breathingSets.ts
-
-features/
-  intake/ui/
-    FeelingSection.tsx
-    TimeSection.tsx
-    FindBreathingSystemDialog.tsx
-    DialogContent.tsx
-    ResultView.tsx
-    LoadingView.tsx
-    SuccessView.tsx
-  session/
-    ui/
-      BeforeBreathingSessionStart.tsx
-      BreathingSessionActive.tsx
-      BreathingSessionFinished.tsx
-      FeelingAfterSession.tsx
-      InputFeelings.tsx
-    model/
-      getPhaseAt.ts
-      lib/formatPhase.ts
-
-hooks/
-  useSessionPersistence.ts
-  useTimerSession.ts
-
-shared/ui/
-  Navbar.tsx
+app/                  # роуты Next.js
+entities/breathing/   # доменные типы и данные техник
+features/intake/      # выбор состояния/времени и подбор техник
+features/session/     # экраны и логика сессии
+features/history/     # UI истории сессий
+hooks/                # persistence, таймер, история
+shared/ui/            # общие UI-компоненты (navbar, фон)
+styles/               # глобальные стили
 ```
 
-## Основные типы данных
-
-Определены в `entities/breathing/model/types.ts`.
-
-- `TimeOption`: `2 | 5 | 10`
-- `SessionStatus`: `"Not Started" | "Active" | "Finished"`
-- `PhaseType`: `"inhale" | "hold" | "exhale" | "hold_empty"`
-- `BreathingSet`:
-  - цель, подходящие состояния и время
-  - список техник `BreathingTechnique`
-
-Наборы дыхательных техник находятся в `entities/breathing/data/breathingSets.ts`.
-
-## Контракт URL для сессии
-
-Страница сессии читает:
-
-- `tech`: id техники
-- `time`: минуты (`2 | 5 | 10`)
-
-`useSessionPersistence` парсит `time` и использует `2`, если значение невалидно.
-
-Пример:
-
-```text
-/sessions?tech=box-4&time=5
-```
-
-## Локальный запуск
+## Быстрый старт
 
 ### Требования
 
 - Node.js 20+
 - npm
 
-### Установка зависимостей
+### Установка и запуск
 
 ```bash
 npm install
-```
-
-### Запуск dev-сервера
-
-```bash
 npm run dev
 ```
 
-Открой в браузере: `http://localhost:3000`
+Открой `http://localhost:3000`.
 
-## Скрипты
-
-- `npm run dev` — запуск dev-сервера
-- `npm run build` — production-сборка
-- `npm run start` — запуск production-сервера
-- `npm run lint` — проверка ESLint
-
-Проверка TypeScript:
+## Полезные команды
 
 ```bash
-npx tsc --noEmit
+npm run dev      # запуск dev-сервера
+npm run build    # production-сборка
+npm run start    # запуск production-сборки
+npm run lint     # проверка ESLint
+npx tsc --noEmit # проверка TypeScript
 ```
 
-## Текущие ограничения
+## Ограничения текущей версии
 
-- `history` пока не подключена к реальным данным.
-- Кнопка `Save and Finish` на финальном экране пока без полной бизнес-логики.
-- Часть TODO-задач по рефакторингу и полировке UI еще в работе.
-
+- Нет backend и синхронизации между устройствами.
+- История хранится только локально в браузере.
+- Подбор набора техник основан на точном совпадении `feeling + time`.
+- Проект не является медицинским инструментом и не заменяет консультацию специалиста.
