@@ -1,39 +1,32 @@
 import "@/styles/globals.css";
-import { Inter } from "next/font/google";
+import { Noto_Serif, Source_Sans_3 } from "next/font/google";
+
 import Navbar from "@/shared/ui/Navbar";
-import FloatingLines from "@/shared/ui/Floating_Lines_bg";
 
 export const metadata = {
   title: "Focus Reset - Home Check-in",
   icons: { icon: "/icon.png" },
 };
 
-const inter = Inter({ subsets: ["latin"] });
+const sourceSans = Source_Sans_3({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-source-sans",
+  display: "swap",
+});
+
+const notoSerif = Noto_Serif({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-noto-serif",
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={`${inter.className} gradient-bg min-h-screen transition-all duration-300 relative overflow-x-hidden`}>
+    <html lang="en" className={`${sourceSans.variable} ${notoSerif.variable}`}>
+      <body className={`${sourceSans.className} calm-background min-h-screen transition-all duration-300 relative overflow-x-hidden`}>
         <div className="fixed inset-0 -z-10 pointer-events-none">
-          <FloatingLines
-            interactive={false}
-            parallax={false}
-            animationSpeed={0.45}
-            lineCount={[8, 6, 4]}
-            lineDistance={[7, 9, 10]}
-            linesGradient={["#7C3AED", "#A855F7", "#C084FC", "#FB923C", "#F97316"]}
-            mixBlendMode="screen"
-            maxFps={30}
-            maxPixelRatio={1}
-          />
           <div className="absolute inset-0 bg-black/20" />
         </div>
 

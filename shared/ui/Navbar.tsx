@@ -17,7 +17,13 @@ export default function Navbar() {
     ];
 
     useEffect(() => {
-        setMenuOpen(false);
+        const frame = window.requestAnimationFrame(() => {
+            setMenuOpen(false);
+        });
+
+        return () => {
+            window.cancelAnimationFrame(frame);
+        };
     }, [pathname]);
 
     useEffect(() => {
@@ -57,21 +63,21 @@ export default function Navbar() {
     }, []);
 
     return (
-        <header ref={headerRef} className="max-w-300 w-full m-auto top-3 px-5 z-30 sticky">
-            <div className="rounded-full bg-(--bg-800) shadow-md">
-                <div className="max-w-280 mx-auto">
+        <header ref={headerRef} className="sticky top-0 z-30 w-full">
+            <div className="calm-nav">
+                <div className="max-w-6xl mx-auto">
                     <div className="m-auto flex w-full items-center justify-between p-5">
                         <div className="flex items-center gap-2">
                             <div className="size-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
                                 <Image src={image} alt="Logo" className="w-15 h-10" />
                             </div>
-                            <span className="font-bold text-[18px] text-white">Focus Reset</span>
+                            <span className="font-ui text-[18px] calm-text">Focus Reset</span>
                         </div>
 
                         <div className="flex gap-5 items-center">
                             <nav className="hidden items-center gap-4 md:flex">
                                 {navLinks.map((link) => (
-                                    <Link key={link.href} className="text-[16px] text-white/90 font-medium transition-colors hover:text-white" href={link.href}>
+                                    <Link key={link.href} className="text-[16px]  font-medium transition-colors hover:text-primary" href={link.href}>
                                         {link.label}
                                     </Link>
                                 ))}
@@ -113,7 +119,7 @@ export default function Navbar() {
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
-                            className="rounded-md px-2 py-2 text-[16px] text-white/90 font-medium transition-colors hover:text-white"
+                            className="rounded-md px-2 py-2 text-[16px] calm-text font-medium transition-colors hover:text-white"
                             href={link.href}
                             onClick={() => setMenuOpen(false)}
                         >

@@ -18,6 +18,8 @@ type DialogPhase = "loading" | "success" | "result";
 export default function DialogContent({ selectedFeeling, selectedTime, recommendation, onClose }: DialogContentProps) {
     const [phase, setPhase] = useState<DialogPhase>("loading");
 
+    // TODO(ux): Не показывать фальшивый "success", если нет selectedFeeling/selectedTime или recommendation === null.
+    // Лучше сразу показать спокойное пустое состояние или ошибку без имитации персонализации.
     useEffect(() => {
         const timerSuccess = setTimeout(() => setPhase("success"), 900);
         const timerResult = setTimeout(() => setPhase("result"), 1600);

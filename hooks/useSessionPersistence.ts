@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 /*
 TODO(следующий-шаг: история/профиль):
-- Добавить безопасные localStorage-хелперы:
+- Добавить безопасные хелперы для localStorage:
   readJson<T>(key, fallback), writeJson(key, value)
 - Добавить API для истории сессий:
   appendSessionHistory(item), getSessionHistory(), clearSessionHistory()
@@ -15,6 +15,8 @@ TODO(следующий-шаг: история/профиль):
 Ключи:
 - focusreset:session-history:v1
 - focusreset:profile:v1
+TODO(session): Хранить не только статус, но и тайминг сессии:
+startedAt, durationSeconds, pausedAt/remainingSeconds. Сейчас обновление страницы во время Active может перезапустить таймер.
 */
 
 export function useSessionPersistence(storageKey: string | null) {
@@ -40,7 +42,13 @@ export function useSessionPersistence(storageKey: string | null) {
   }, [storageKey, breathingSession]);
 
   useEffect(() => {
-    setIsHydrated(true);
+    const frame = window.requestAnimationFrame(() => {
+      setIsHydrated(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   return {

@@ -10,6 +10,8 @@ import type {
 
 const HISTORY_KEY = "focusreset:session-history:v1";
 
+// TODO(хранилище): Вынести общий безопасный API для localStorage для истории, сессии и профиля.
+// Здесь стоит добавить миграции версий, лимит записей, обработку переполнения квоты и UI для удаления/очистки.
 function isAfterSessionFeeling(value: unknown): value is AfterSessionFeeling {
   return (
     value === "Stressed" ||

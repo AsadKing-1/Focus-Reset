@@ -3,7 +3,7 @@ import type {
   PhaseType,
   TimeOption,
 } from "@/entities/breathing/model/types";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 type VisualPhase = "inhale" | "hold" | "exhale";
 
@@ -36,7 +36,7 @@ export function useTime(
   const timeLabel = formatClock(secondsLeft);
   const elapsedLabel = formatClock(elapsedSeconds);
 
-  const phaseSnapshot = useMemo(() => {
+  const phaseSnapshot = (() => {
     if (!technique.phases?.length || totalSeconds === 0) return null;
 
     const cycleDuration = technique.phases.reduce(
@@ -75,7 +75,7 @@ export function useTime(
       phaseSecondsLeft: 0,
       phaseProgress: 1,
     };
-  }, [technique.phases, totalSeconds, elapsedSeconds]);
+  })();
 
   return {
     formatClock,
