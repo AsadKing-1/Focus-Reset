@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Clock3, Sparkles, X } from "lucide-react";
 
-import { formatPhases } from "@/features/session/model/lib/formatPhase";
+import { formatPhases } from "@/features/session/model/formatPhase";
 
 import type { BreathingSet, Feelings, TimeOption } from "@/entities/breathing/model/types";
 

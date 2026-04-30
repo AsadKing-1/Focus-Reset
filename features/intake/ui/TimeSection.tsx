@@ -1,19 +1,20 @@
 "use client";
 
 import type { TimeOption } from "@/entities/breathing/model/types";
+import type { Feelings } from "@/entities/breathing/model/types";
 
 import { ArrowRight, Hourglass } from "lucide-react";
 import Research from "./Research";
 
 type TimeSectionProps = {
     selectedTime: TimeOption | null;
+    selectedFeeling: Feelings | null;
     onSelectTime: (time: TimeOption) => void;
     onFindTechnique: (find: boolean) => void;
 };
 
-export default function TimeSection({ selectedTime, onSelectTime, onFindTechnique }: TimeSectionProps) {
+export default function TimeSection({ selectedTime, selectedFeeling, onSelectTime, onFindTechnique }: TimeSectionProps) {
     const times: TimeOption[] = [2, 5, 10];
-
     const timeButtonBase = "w-full rounded-xl border px-4 py-4 text-sm font-semibold calm-focus transition-all duration-300 hover:-translate-y-0.5 active:translate-y-px active:scale-[0.98]";
     const timeButtonIdle = "border-(--calm-border) bg-(--calm-surface) calm-text-soft shadow-sm hover:border-primary hover:bg-(--calm-primary-soft)";
     const timeButtonActive = "border-primary bg-(--calm-primary-soft) calm-text shadow-[0_0_0_3px_var(--calm-primary-ring)]";
@@ -43,11 +44,31 @@ export default function TimeSection({ selectedTime, onSelectTime, onFindTechniqu
                     })}
                 </div>
             </div>
-            <Research/>
+            <Research />
             <div className="p-3">
-                <button onClick={() => onFindTechnique(true)} className="w-full flex justify-center items-center gap-4 p-7 rounded-4xl text-[20px] bg-(--bg-800)  border border-(--calm-border) text-primary font-ui font-bold shadow-2xl shadow-primary/20 hover:-translate-y-1 active:translate-y-2 active:scale-[0.98] transition-all duration-300">
+                <button
+                    disabled={selectedTime === null || selectedFeeling === null}
+                    onClick={() => onFindTechnique(true)}
+                    className="
+                            w-full flex justify-center items-center gap-4 p-7 rounded-4xl text-[20px]
+                            bg-(--bg-800) border border-(--calm-border)
+                            text-primary font-ui font-bold
+                            shadow-2xl shadow-primary/20
+                            hover:-translate-y-1 active:translate-y-2 active:scale-[0.98]
+                            transition-all duration-300
+                            disabled:bg-(--bg-700)
+                            disabled:border-(--calm-border)/50
+                            disabled:text-primary/40
+                            disabled:shadow-none
+                            disabled:cursor-not-allowed
+                            disabled:opacity-80
+                            disabled:hover:translate-y-0
+                            disabled:active:translate-y-0
+                            disabled:active:scale-100
+                    "                
+                    >
                     Find Technique
-                    <ArrowRight className="size-6" />
+                    <ArrowRight className="size-6 opacity-90 group-disabled:opacity-40" />
                 </button>
             </div>
         </div>

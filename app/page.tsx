@@ -1,10 +1,4 @@
 ﻿"use client";
-
-/*
-TODO(главная/дизайн):
-- Передавать disabled-состояние в TimeSection и не открывать подбор, пока не выбраны feeling и time.
-*/
-
 import FeelingSection from "@/features/intake/ui/FeelingSection";
 import TimeSection from "@/features/intake/ui/TimeSection";
 
@@ -32,7 +26,7 @@ export default function Home() {
           <FeelingSection selectedFeeling={selectedFeeling} onSelectFeeling={setSelectedFeeling} />
         </div>
         <div className="animate-fade-in fade-in-delay-3">
-          <TimeSection selectedTime={selectedTime} onSelectTime={setSelectedTime} onFindTechnique={setOpen} />
+          <TimeSection selectedFeeling={selectedFeeling} selectedTime={selectedTime} onSelectTime={setSelectedTime} onFindTechnique={setOpen} />
         </div>
       </div>
       <div className="mt-20 w-full max-w-4xl opacity-20 pointer-events-none mx-auto">

@@ -2,12 +2,10 @@
 
 import { ArrowRight, Clock, Wind } from "lucide-react";
 import { useRouter } from "next/navigation";
-
 import { useSessionHistory } from "@/hooks/useSessionHistory";
 import type { BreathingTechnique, TimeOption, SessionHistoryItem } from "@/entities/breathing/model/types";
 import { useState } from "react";
 import type { AfterSessionFeeling } from "@/entities/breathing/model/types";
-
 import FeelingAfterSession from "./FeelingAfterSession";
 import InputFeelings from "./InputFeelings";
 
@@ -16,16 +14,12 @@ interface BreathingSessionFinishedProps {
     selectedTime: TimeOption;
 }
 
-
 export default function BreathingSessionFinished({ technique, selectedTime }: BreathingSessionFinishedProps) {
     const { createHistorySession } = useSessionHistory()
     const router = useRouter();
-
     const [notes, setNotes] = useState<string>("");
     const [feelingAfter, setFeelingAfter] = useState<AfterSessionFeeling>("Neutral");
 
-    // TODO(совместимость): crypto.randomUUID может отсутствовать в старых браузерах и webview.
-    // Добавить запасной хелпер createSessionId().
     const handleSaveAndFinish = () => {
         const sessionItem: SessionHistoryItem = {
             id: crypto.randomUUID(),
@@ -58,10 +52,6 @@ export default function BreathingSessionFinished({ technique, selectedTime }: Br
                             <div className="md:w-1/3 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
                                     <Wind className="size-28 text-primary opacity-20" />
-                                </div>
-                                {/* TODO(ассеты/дизайн): Не использовать прямую ссылку на googleusercontent.
-                                    Положить спокойное локальное изображение/текстуру в public/ или заменить на CSS/next/image. */}
-                                <div className="w-full h-48 md:h-full bg-center bg-no-repeat bg-cover" data-alt="Calming abstract waves in shades of blue" style={{ backgroundImage: "url(https://lh3.googleusercontent.com/aida-public/AB6AXuCcH2tsS7rt_ZNJtW5Hg81IzkfNX2OOgCyj9dpFqMwW5F5CSFgEo8hQA6YgEbiBDC3Zq4fcS1tNUIdPXdNRy-dX_U4Wnkt67KzYHfYirZ2HWyzcsSyp_H5_PoTvFcdyE7IzuK3ox4TQiYoDUmL2tOTwE--hozsDvfwsIlSGltdDrtYW_Fb19PV5day08Rx7gRIFCYDtdNwMkZemqD42Ro4lub55Jl5EucY1iELNYeOITsefpif3si6DtegA2adyjb7wheWRIEDrfGYc" }}>
                                 </div>
                             </div>
                             <div className="flex-1 p-6 flex flex-col justify-center gap-1">

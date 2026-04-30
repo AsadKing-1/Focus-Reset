@@ -1,11 +1,7 @@
 ﻿"use client";
-
 import { Clock, Flower2, Info, Play, Zap } from "lucide-react";
-
 import StarBreatingPreview from "./StartBreatingPreview";
-
 import { TimeOption } from "@/entities/breathing/model/types";
-
 import type { BreathingTechnique } from "@/entities/breathing/model/types";
 
 interface BeforeBreathingSessionStartProps {

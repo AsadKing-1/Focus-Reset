@@ -4,21 +4,6 @@ import type {
 } from "@/entities/breathing/model/types";
 import { useState, useEffect } from "react";
 
-/*
-TODO(следующий-шаг: история/профиль):
-- Добавить безопасные хелперы для localStorage:
-  readJson<T>(key, fallback), writeJson(key, value)
-- Добавить API для истории сессий:
-  appendSessionHistory(item), getSessionHistory(), clearSessionHistory()
-- Добавить API для мини-профиля:
-  getMiniProfile(), saveMiniProfile(profile)
-Ключи:
-- focusreset:session-history:v1
-- focusreset:profile:v1
-TODO(session): Хранить не только статус, но и тайминг сессии:
-startedAt, durationSeconds, pausedAt/remainingSeconds. Сейчас обновление страницы во время Active может перезапустить таймер.
-*/
-
 export function useSessionPersistence(storageKey: string | null) {
   const [isHydrated, setIsHydrated] = useState(false);
 

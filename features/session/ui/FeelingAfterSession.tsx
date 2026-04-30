@@ -9,8 +9,6 @@ const feelings: { icon: LucideIcon; label: Exclude<AfterSessionFeeling, null> }[
     { icon: Zap, label: "Energized" }
 ];
 
-// TODO(доступность/типы): Сделать `feelings as const`, вывести тип из массива и добавить видимую подпись/aria-pressed.
-// Сейчас кнопки выбора показывают только иконки, поэтому смысл хуже считывается клавиатурой и скринридером.
 interface FeelingAfterSessionProps {
     value: AfterSessionFeeling;
     onChange: (value: AfterSessionFeeling) => void;

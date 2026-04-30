@@ -6,8 +6,6 @@ export default function EmptyStateHistory() {
         <section className="w-full px-3 py-8 md:py-12 animate-fade-in fade-in-delay-1">
             <div className="mx-auto w-full max-w-5xl">
                 <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl shadow-black/10 md:p-8">
-                    {/* TODO(дизайн): Декоративные размытые пятна усиливают "дешевый SaaS/дофамин" стиль.
-                        Для спокойного UI лучше использовать воздух, тонкую линию или мягкую текстуру и светлую карточку. */}
                     <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
                     <div className="pointer-events-none absolute -left-8 bottom-0 h-36 w-36 rounded-full bg-primary/10 blur-3xl" />
 

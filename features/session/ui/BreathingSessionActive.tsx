@@ -3,49 +3,9 @@
 import { useEffect } from "react";
 import { Pause, Play, X } from "lucide-react";
 import type { BreathingTechnique, SessionStatus, TimeOption } from "@/entities/breathing/model/types";
-
+import { PHASE_LABELS } from "@/features/session/model/BreathingSessionActiveEntities";
+import { PHASE_STYLES } from "@/features/session/model/BreathingSessionActiveEntities";
 import { useTime } from "@/hooks/useTimerSession";
-
-type VisualPhase = "inhale" | "hold" | "exhale";
-
-const PHASE_LABELS: Record<string, string> = {
-    inhale: "Inhale",
-    hold: "Hold",
-    exhale: "Exhale",
-    hold_empty: "Hold (empty)",
-};
-
-const PHASE_STYLES: Record<VisualPhase, {
-    badge: string;
-    timer: string;
-    ring: string;
-    track: string;
-    bar: string;
-}> = {
-    inhale: {
-        badge: "border-indigo-400/70 bg-indigo-500/10 text-indigo-300",
-        timer: "text-indigo-500",
-        ring: "border-indigo-400/60",
-        track: "bg-indigo-950/50",
-        bar: "bg-indigo-500",
-    },
-
-    hold: {
-        badge: "border-sky-400/30 bg-sky-500/10 text-sky-300",
-        timer: "text-sky-500",
-        ring: "border-sky-400/60",
-        track: "bg-sky-950/50",
-        bar: "bg-sky-500",
-    },
-
-    exhale: {
-        badge: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
-        timer: "text-emerald-500",
-        ring: "border-emerald-400/60",
-        track: "bg-emerald-950/50",
-        bar: "bg-emerald-500",
-    },
-};
 
 interface BreathingSessionActiveProps {
     setBreathingSession: (value: SessionStatus) => void;
@@ -72,8 +32,6 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
         setIsRunning(totalSeconds > 0);
     }, [setIsRunning, setSecondsLeft, totalSeconds]);
 
-    // TODO(timer): setInterval дрейфует, особенно когда вкладка скрыта.
-    // Для точного дыхательного таймера считать secondsLeft от Date.now() и меток времени pause/resume.
     useEffect(() => {
         if (!isRunning || totalSeconds === 0) return;
 

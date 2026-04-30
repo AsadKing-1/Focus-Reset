@@ -1,32 +1,14 @@
 import type { SessionHistoryItem } from "@/entities/breathing/model/types";
-import { Clock, Frown, Meh, Smile, Wind, Zap } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { FEELING_META } from "@/features/history/model/SessionHistoryEntities";
+import { formatEndedAt } from "@/features/history/model/SessionHistoryEntities";
+import { Clock, Wind } from "lucide-react";
 
 interface SessionHistoryItemsProps {
   item: SessionHistoryItem;
 }
 
-const FEELING_META: Record<
-  Exclude<SessionHistoryItem["feelingAfter"], null>,
-  { icon: LucideIcon; label: string }
-> = {
-  Stressed: { icon: Frown, label: "Stressed" },
-  Neutral: { icon: Meh, label: "Neutral" },
-  Calm: { icon: Smile, label: "Calm" },
-  Energized: { icon: Zap, label: "Energized" },
-};
-
-function formatEndedAt(value: string): string {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Unknown time";
-
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
-
 export default function SessionHistoryItems({ item }: SessionHistoryItemsProps) {
+  
   const feelingMeta = item.feelingAfter ? FEELING_META[item.feelingAfter] : null;
   const FeelingIcon = feelingMeta?.icon;
   const hasNotes = item.notes.trim().length > 0;
