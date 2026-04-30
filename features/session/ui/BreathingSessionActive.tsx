@@ -23,24 +23,26 @@ const PHASE_STYLES: Record<VisualPhase, {
     bar: string;
 }> = {
     inhale: {
-        badge: "border-primary/30 bg-primary/10 text-primary",
-        timer: "text-primary",
-        ring: "border-primary/40",
-        track: "bg-primary/10",
-        bar: "bg-primary",
+        badge: "border-indigo-400/70 bg-indigo-500/10 text-indigo-300",
+        timer: "text-indigo-500",
+        ring: "border-indigo-400/60",
+        track: "bg-indigo-950/50",
+        bar: "bg-indigo-500",
     },
+
     hold: {
-        badge: "border-sky-300 bg-sky-50 text-sky-700",
-        timer: "text-sky-600",
-        ring: "border-sky-300/70",
-        track: "bg-sky-100",
+        badge: "border-sky-400/30 bg-sky-500/10 text-sky-300",
+        timer: "text-sky-500",
+        ring: "border-sky-400/60",
+        track: "bg-sky-950/50",
         bar: "bg-sky-500",
     },
+
     exhale: {
-        badge: "border-emerald-300 bg-emerald-50 text-emerald-700",
-        timer: "text-emerald-600",
-        ring: "border-emerald-300/80",
-        track: "bg-emerald-100",
+        badge: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
+        timer: "text-emerald-500",
+        ring: "border-emerald-400/60",
+        track: "bg-emerald-950/50",
         bar: "bg-emerald-500",
     },
 };
@@ -203,7 +205,7 @@ export default function BreathingSessionActive({ setBreathingSession, selectedTi
                     <div className="flex flex-col gap-3 px-5 pb-6 md:flex-row md:px-6">
                         <button
                             onClick={() => setIsRunning((prev) => !prev)}
-                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-(--bg-800) p-4 font-extrabold text-white border-gradient transition-all duration-150 active:translate-y-1 active:shadow-none"
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-(--bg-800) p-4 font-extrabold calm-text border-gradient transition-all duration-150 active:translate-y-1 active:shadow-none"
                         >
                             {isRunning ? <Pause className="size-5" /> : <Play className="size-5" />}
                             <span>{isRunning ? "Pause Session" : "Resume Session"}</span>

@@ -23,15 +23,15 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
             </div>
             <div className="p-3 pb-10 animate-fade-in fade-in-delay-2">
                 <div className="mx-auto w-full max-w-5xl">
-                    <div className="overflow-hidden rounded-2xl bg-(--bg-800)  shadow-2xl shadow-black/10">
+                    <div className="overflow-hidden rounded-2xl bg-(--bg-800) shadow-2xl shadow-black/10">
                         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr]">
-                            <div className="border-r border-r-[#120012]">
+                            <div className="border-r border-r-[#e5e3e5]">
                                 <StarBreatingPreview />
                             </div>
                             <div className="p-6 md:p-8">
                                 <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wide text-primary/80">
                                     <Clock className="size-4" />
-                                    {selectedTime ? `${selectedTime} session` : "Session"}
+                                    {selectedTime ? `${selectedTime} min session` : "session"}
                                 </div>
                                 <h2 className="mt-2 text-2xl md:text-3xl font-extrabold text-slate-500">
                                     {technique.name}
@@ -49,7 +49,7 @@ export default function BeforeBreathingSessionStart({ technique, selectedTime, s
                                         Sharpens Focus
                                     </span>
                                 </div>
-                                <button onClick={() => setBreathingSession("Active")} className="flex justify-center items-center mt-6 w-full rounded-xl bg-(--bg-800) border-gradient px-5 py-3 text-sm font-extrabold text-white shadow-lg transition duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                                <button onClick={() => setBreathingSession("Active")} className="flex justify-center items-center mt-6 w-full rounded-xl bg-(--bg-800) border-gradient px-5 py-3 text-sm font-extrabold calm-text shadow-lg transition duration-200 hover:-translate-y-0.5 active:translate-y-0">
                                     <Play className="size-4" />
                                     <span className="ml-2">Start Session</span>
                                 </button>
